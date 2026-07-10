@@ -270,7 +270,7 @@ elif opciones == 'Game':
 elif opciones == 'Estadísticas':
     st.markdown("<h2 style='text-align: center;'>Gráficos y demás</h2>", unsafe_allow_html=True)   
    
-texto_detalles = """
+    texto_detalles = """
     Comparativa del éxito de las canciones de Sabrina Carpenter, tanto suyas como en las que participo, fromando parte de la disqueda Hollywood Records e 
     Islando Records segun las vistas de cada canción. 
     """
