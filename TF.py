@@ -224,11 +224,13 @@ elif opciones == 'Games':
     if st.session_state.intentos >= intentos_maximos:
         st.error(f"💥 ¡Game Over! Agotaste tus {intentos_maximos} intentos. La producción era: **{produccion_secreta}**")
 
+        col1, col2, col3 = st.columns([1, 2, 1])
         st.image("SC_gif_2.gif", caption="¡Inténtalo de nuevo!", width=400)
     
     elif "_" not in palabra_mostrada:
         st.success("🎉 ¡Felicidades! ¡Has adivinado la producción con éxito!")
 
+        col1, col2, col3 = st.columns([1, 2, 1])
         st.image("SC_gif.gif", caption="¡Eres excelente!", width=400)
     
     else:
