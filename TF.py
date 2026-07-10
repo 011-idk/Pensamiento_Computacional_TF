@@ -223,6 +223,7 @@ elif opciones == 'Games':
     # 5. CONTROL DE FIN DE JUEGO O ENTRADA DE DATOS
     if st.session_state.intentos >= intentos_maximos:
         st.error(f"💥 ¡Game Over! Agotaste tus {intentos_maximos} intentos. La producción era: **{produccion_secreta}**")
+    
     elif "_" not in palabra_mostrada:
         st.success("🎉 ¡Felicidades! ¡Has adivinado la producción con éxito!")
     else:
