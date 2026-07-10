@@ -11,8 +11,8 @@ with st.sidebar:
     with st.expander("Selecciona una sección", expanded=True):
         opciones = option_menu (
             menu_title=None, 
-            options=['Presentación', 'Discografía', 'Filmografía', 'Games'], 
-            icons=['suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill'], 
+            options=['Presentación', 'Discografía', 'Filmografía', 'Game', 'Estadísticas'], 
+            icons=['suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill'], 
             default_index=0)
 
 if opciones == 'Presentación':
@@ -266,8 +266,8 @@ elif opciones == 'Game':
         st.session_state.intentos = 0
         st.rerun()
 
-elif opciones == 'Graficos':
-    st.markdown("<h2 style='text-align: center;'>Juegos Lúdicos</h2>", unsafe_allow_html=True)   
+elif opciones == 'Estadísticas':
+    st.markdown("<h2 style='text-align: center;'>Gráficos y demás</h2>", unsafe_allow_html=True)   
 
 
 
