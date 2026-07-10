@@ -223,9 +223,14 @@ elif opciones == 'Games':
     # 5. CONTROL DE FIN DE JUEGO O ENTRADA DE DATOS
     if st.session_state.intentos >= intentos_maximos:
         st.error(f"💥 ¡Game Over! Agotaste tus {intentos_maximos} intentos. La producción era: **{produccion_secreta}**")
+
+        st.image("SC_gif_2.gif", caption="¡Inténtalo de nuevo!", width=400)
     
     elif "_" not in palabra_mostrada:
         st.success("🎉 ¡Felicidades! ¡Has adivinado la producción con éxito!")
+
+        st.image("SC_gif.gif", caption="¡Eres excelente!", width=400)
+    
     else:
         # INPUT TRADICIONAL SIN FORMULARIO (Elimina problemas de recarga en cascada)
         intento = st.text_input("Adivina una letra (escribe y presiona Enter):", max_chars=1, key="input_letra")
