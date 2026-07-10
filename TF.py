@@ -368,7 +368,7 @@ elif opciones == 'Estadísticas':
 
     # 2. Extracción y limpieza para el mapa (coordenadas únicas)
     # Quitamos filas vacías y eliminamos duplicados en las coordenadas
-    df_mapa = df_musica[['Grabación_lugar', 'Coordenas']].dropna().drop_duplicates(subset=['Coordenas'])
+    df_mapa = df_musica[['Grabación_lugar', 'Coordenadas']].dropna().drop_duplicates(subset=['Coordenas'])
 
     st.subheader("Ubicaciones de Grabación")
 
@@ -378,7 +378,7 @@ elif opciones == 'Estadísticas':
     # Recorrer las filas únicas para colocar los marcadores
     for _, fila in df_mapa.iterrows():
         lugar = fila['Grabación_lugar']
-        coordenadas_str = str(fila['Coordenas'])
+        coordenadas_str = str(fila['Coordenadas'])
         
             # Separamos el texto "latitud, longitud" por la coma y lo convertimos a números float
         lat, lon = map(float, coordenadas_str.split(','))
