@@ -2,6 +2,7 @@
 import streamlit as st # Permite construir la página web
 import pandas as pd # Permitira leer las bases de datos
 import folium # Permite crear mapas
+import matplotlib.pyplot as plt
 from streamlit_option_menu import option_menu # Permite generar menus visuales
 from streamlit_folium import st_folium # Permite generarlos mapas dentro de la página web de Streamlit.
 
