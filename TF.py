@@ -396,7 +396,7 @@ elif opciones == 'Estadísticas':
     st.subheader("Buscador de Videoclips")
 
     # Filtramos las canciones que tienen un link de video válido
-    df_videos = df_musica[['canciones', 'MV', 'Link_mv']].dropna(subset=['Link_mv'])
+    df_videos = df_musica[['canciones', 'mv', 'Link_mv']].dropna(subset=['Link_mv'])
 
     if not df_videos.empty:
         # Menú desplegable con las canciones únicas que tienen video
@@ -407,7 +407,7 @@ elif opciones == 'Estadísticas':
 
         # Mostramos los datos en pantalla
         st.write(f"**Canción:** {info_cancion['canciones']}")
-        st.write(f"**Detalle del MV:** {info_cancion['MV']}")
+        st.write(f"**Detalle del MV:** {info_cancion['mv']}")
         
         # Enlace directo para abrir el video
         st.markdown(f"[➡️ Ver Videoclip en este enlace]({info_cancion['Link_mv']})")
