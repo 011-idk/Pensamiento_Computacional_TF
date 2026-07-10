@@ -11,7 +11,7 @@ with st.sidebar:
     with st.expander("Selecciona una sección", expanded=True):
         opciones = option_menu (
             menu_title=None, 
-            options=['Presentación', 'Discografía', 'Filmografía', 'Game', 'Estadísticas'], 
+            options=['Presentación', 'Discografía', 'Filmografía', 'Game', 'Espresso'], 
             icons=['suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill'], 
             default_index=0)
 
@@ -27,6 +27,16 @@ if opciones == 'Presentación':
    # Define una cadena de texto multilínea que contiene una guía para redactar una presentación personal.
     texto = """
     Aquí escribe una presentación sobre el blog
+    # ¡Bienvenidos! Este blog está dedicado a conocer y explorar la trayectoria de **Sabrina Carpenter**, tanto en su faceta como actriz como en su carrera musical. Aquí encontrarás información sobre
+    su discografía desde sus inicos hasta los últimos lanzamientos, así como de sus películas y series más recordadas o que quiza no conocias. 
+    
+    Este blog está organizado en diferentes secciones. En la sección de **Discografía** encontraras una compilación de las canciones de Sabrina Carpenter, etres albums, sensillos y demás. En la 
+    sección de **Filmografía** encontrarás información sobre los productos audiovisuales en los que ha participado tanto peliculas, series, incluso especiales de TV. También esta la sección **Games** en 
+    donde podrás jugar el famoso juego del ahorcado basado en las producciones en las que ha participado la artista. Finalmente tenemos la sección **Espresso**, en la cual podrás encontrar un grafico comparativo, 
+    un mapa interactivo, y podrás ver elegir entre videoclips de las canciones de Sabrina Carpenter e ir directo a verlos.
+
+    Espero que disfrutes recorriendo este espacio y que encuentres información interesante sobre una de las artistas más destacadas de su generación. ¡Gracias!
+    
     """
     # Mostramos el texto de presentación debajo de la imagen utilizando HTML
     st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{texto}</div>", unsafe_allow_html=True)
@@ -110,7 +120,7 @@ elif opciones == 'Filmografía':
     texto_actriz = """
     Sabrina Carpenter inicio en el mundo de la actuación a la edad de 11 años y desde entonces ha  participado en diversas producciones audiovisuales, 
     contruyendo un carrera actoral polifacética y en constante evolución. Sus primeras participaciones se dieron en series de televisión, más no fue hasta entrar a
-    Disney que alcanzó gran popularidad internacional. Esto la a cnsolidado como una artista integral en la industria del entretenimiento.
+    Disney que alcanzó gran popularidad internacional. Esto la a consolidado como una artista integral en la industria del entretenimiento.
     """
 
     st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_actriz}</div>", unsafe_allow_html=True)
@@ -267,7 +277,7 @@ elif opciones == 'Game':
         st.rerun()
 
 
-elif opciones == 'Estadísticas':
+elif opciones == 'Espresso':
     st.markdown("<h2 style='text-align: center;'>Gráficos y demás</h2>", unsafe_allow_html=True)   
    
     texto_detalles = """
@@ -305,9 +315,9 @@ elif opciones == 'Estadísticas':
     
     # Volvemos a poner 'Disquera' como índice y ordenamos de mayor a menor
     promedio_dos_disqueras = df_filtrado.set_index('Disquera')['vistas_yt'].sort_values(ascending=False)
-    # --------------------------------------------
     
-    # --- ESCALA A MILES ---
+    
+    # Lo ponemos en escala de miles
     promedio_dos_disqueras = promedio_dos_disqueras / 1000
     
     # Creamos la figura explícitamente para Streamlit (Tamaño 8, 5 para que no sea tan gigante al ser solo 2 barras)
