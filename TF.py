@@ -377,15 +377,15 @@ elif opciones == 'Estadísticas':
 
     #Recorrer las filas limpiando los paréntesis antes de separar
     for _, fila in df_mapa.iterrows():
-        try:
-            # Convertimos a texto y eliminamos los paréntesis '(' y ')' si existen
-            coor_limpia = str(fila['Coordenas']).replace('(', '').replace(')', '')
+    
+        # Convertimos a texto y eliminamos los paréntesis '(' y ')' si existen
+        coor_limpia = str(fila['Coordenas']).replace('(', '').replace(')', '')
             
-            # Ahora sí separamos por coma y convertimos a número
-            lat, lon = map(float, coor_limpia.split(','))
+        # Ahora sí separamos por coma y convertimos a número
+        lat, lon = map(float, coor_limpia.split(','))
             
-            contenido = f"<b>Lugar:</b> {fila['Grabación_lugar']}"
-            folium.Marker(location=[lat, lon], popup=folium.Popup(contenido, max_width=300), icon=folium.Icon(color='cadetblue', icon='music')).add_to(mapa)
+        contenido = f"<b>Lugar:</b> {fila['Grabación_lugar']}"
+        folium.Marker(location=[lat, lon], popup=folium.Popup(contenido, max_width=300), icon=folium.Icon(color='cadetblue', icon='music')).add_to(mapa)
        
     # Mostrar el mapa interactivo en Streamlit
     st_folium(mapa, width=1000, height=500, returned_objects=[])
