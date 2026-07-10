@@ -187,64 +187,58 @@ elif opciones == 'Games':
                       "Work It", "Clouds", "Emergency", "Tall Girl 2", "That's Not How This Works (short film)", "A Nonsense Christmas with Sabrina Carpenter", 
                       "Saturday Night Live", "Taylor Swift: The End of an Era", "The Muppet Show", "Confessions II - The Film"]
     
-    # Elegir palabra aleatoria de la lista creada previamente
+        
     produccion_secreta = random.choice(lista_producciones)
     
-    # Creamos una lista vacía para guardar los caracteres adivinados
+    # Corrección: Inicializamos la lista correcta
     producciones_adivinadas = []
-    
-    # Creamos dos variables donde se asignarán los intentos máximos y el número de intento en el que nos encontramos
     intentos_maximos = 3
     intentos = 0
     
-    # Con la función print() damos la bievenida al juego y le incamos al jugador cuántas letras debe adivinar.
     print("¡Bienvenido al juego del Ahorcado (Sabrina's Ver)!")
-    print("La palabra tiene", len(produccion_secreta), "letras.")
+    print("La producción tiene", len(produccion_secreta), "caracteres.")
     
-    # Con el bucle while generamos iteraciones sobre los intentos que tiene el jugar tomando como punto límite los intentos máximos
     while intentos < intentos_maximos:
-        # Con el bucle for generamos una iteración de la letra adivinada según el contenido de la palabra secreta
         for letra in produccion_secreta:
-            if letra in producciones_adivinadas or not letra.isalpha(): # Evalúa si la letra actual ya ha sido adivinada
+            # Corrección: Revelamos automáticamente espacios y caracteres especiales no alfabéticos
+            if letra in producciones_adivinadas or not letra.isalpha(): 
                 print(letra, end=" ")
-            else: # Si no se indica que esa letra aún está oculta
+            else: 
                 print("_", end=" ")
-        print()  # salto de línea
+        print()  
     
-        intento = input("Adivina una letra: ").lower()
+        intento = input("Adivina una letra: ").lower() # Convertimos a minúscula para evitar fallos
     
-        # Verifica que el jugador solo haya ingresado una caracter
-        if len(intento) != 1:
+        if len(intento) != 1 or not intento.isalpha():
             print("Por favor, ingresa una sola letra válida.")
             continue
     
-        # Controla que el jugador no repita letras que ya ha probado
+        # Corrección: Usamos el nombre de variable correcto (producciones_adivinadas)
         if intento in producciones_adivinadas:
             print("Ya adivinaste esa letra.")
             continue
     
-        # Agrega la letra ingresada a la lista de letras ya jugadas
         producciones_adivinadas.append(intento)
     
-        # Si la letra está en la palabra, se felicita al jugador
-        if intento in produccion_secreta:
+        # Corrección: Comparamos en minúsculas para que detecte mayúsculas del título
+        if intento in produccion_secreta.lower():
             print("¡Bien hecho!")
-        else: # Si no, se incrementa el contador de intentos fallidos, y se informa cuántos le quedan.
+        else: 
             intentos += 1
             print("Letra incorrecta. Te quedan", intentos_maximos - intentos, "intentos.")
     
-        # Se asume inicialmente que el jugador sí ha adivinado toda la palabra.
         produccion_completa = True
-        for letra in produccion_secreta: # Se recorre cada letra de la palabra secreta que el jugador debe adivinar.
-            if letra not in producciones_adivinadas: # Si alguna de las letras no ha sido adivinada aún, Se cambia el valor a False, porque la palabra aún no está completa
+        for letra in produccion_secreta: 
+            # Si es una letra y no ha sido adivinada, la producción no está completa
+            if letra.isalpha() and letra.lower() not in producciones_adivinadas: 
                 produccion_completa = False
-                break # Se usa break para salir del bucle inmediatamente, ya que con una sola letra faltante es suficiente para saber que no se ha ganado.
+                break 
     
-        if produccion_completa: # Si se logra adivinar la palabra, el juego se detendrá y se felicita al jugador
-            print("¡Felicidades! Adivinaste la palabra:", produccion_secreta)
+        if produccion_completa: 
+            print("\n🎉 ¡Felicidades! Adivinaste la palabra:", produccion_secreta)
             break
-    else: # solo se ejecuta si el bucle termina de forma natural y no se logró adivinar la palabra y se agotó los intentos
-        print("¡Has perdido!")
+    else: 
+        print("\n💥 ¡Has perdido!")
         print("La palabra era:", produccion_secreta)
 
     
