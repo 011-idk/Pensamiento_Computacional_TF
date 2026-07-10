@@ -269,42 +269,44 @@ elif opciones == 'Game':
 elif opciones == 'Estadísticas':
     st.markdown("<h2 style='text-align: center;'>Gráficos y demás</h2>", unsafe_allow_html=True)   
    
-    # CONFIGURACIÓN DE LA PÁGINA
-    st.set_page_config(page_title="Análisis Comparativo - Disqueras", page_icon="bar-chart-line-fill", layout="wide")
-    
-    st.subtitle("📊 Análisis Comparativo: Impacto de Disqueras en YouTube")
     st.markdown("Este módulo compara el rendimiento acumulado en `vistas_yt` entre las diferentes compañías discográficas registradas en `Musica_BD.xlsx`.")
     
-    # Importamos el módulo pyplot de Matplotlib para crear gráficos.
     import matplotlib.pyplot as plt
+
+    # 1. Carga de datos
+    df_comparativa = pd.read_excel("Musica_BD.xlsx")
+    df_comparativa['vistas_yt'] = pd.to_numeric(df['vistas_yt'], errors='coerce')
+    df_comparativa= df.dropna(subset=['vistas_yt', 'Disquera'])
     
-    # Calculamos el promedio de tarjetas rojas recibidas por cada equipo cuando juega como local.
-    # groupby() agrupa los datos por equipo y mean() calcula el promedio.
-    promedio_tarjeta_rojas = liga_depurada.groupby('HomeTeam')['HR'].mean()
+    # 2. TU LÓGICA: Agrupar por Disquera y sacar el promedio de vistas_yt
+    promedio_vistas_disquera = df.groupby('Disquera')['vistas_yt'].mean()
     
-    # Creamos un gráfico de barras verticales con los promedios de tarjetas rojas.
-    # kind='bar' indica que se usará un gráfico de barras.
-    # figsize define el tamaño de la figura.
-    promedio_tarjeta_rojas.plot(kind='bar', figsize=(10, 6), color='purple')
+    # Creamos la figura explícitamente para Streamlit (Tamaño 10, 6)
+    fig, ax = plt.subplots(figsize=(10, 6))
     
-    # Agregamos título al gráfico.
-    plt.title('SP1: Promedio de tarjetas rojas como local', fontsize=12, fontweight='bold')
-    # Etiqueta del eje X: nombres de los equipos.
-    plt.xlabel('Equipo', fontsize=10)
-    # Etiqueta del eje Y: valores promedio de tarjetas rojas.
-    plt.ylabel('Promedio de goles anotados', fontsize=10)
+    # Dibujamos las barras verticales de color morado ('purple')
+    promedio_vistas_disquera.plot(kind='bar', ax=ax, color='purple')
     
-    # Rotamos los nombres de los equipos para facilitar la lectura.
+    # Agregamos título al gráfico
+    plt.title('Musica_BD: Promedio de vistas en YouTube por Disquera', fontsize=12, fontweight='bold')
+    # Etiqueta del eje X
+    plt.xlabel('Disquera', fontsize=10)
+    # Etiqueta del eje Y
+    plt.ylabel('Promedio de vistas obtenidas', fontsize=10)
+    
+    # Rotamos los nombres de las disqueras a 75 grados
     plt.xticks(rotation=75, ha='right')
-    # Agregamos una cuadrícula horizontal para comparar mejor los valores.
+    # Agregamos la cuadrícula horizontal idéntica a tu código
     plt.grid(axis='y', linestyle='--', alpha=1)
     
-    # Ajustamos automáticamente los espacios del gráfico para que los textos no se corten.
+    # Ajustamos automáticamente los espacios
     plt.tight_layout()
-    # Guardamos el gráfico como imagen PNG con una resolución de 300 dpi.
-    plt.savefig('barras_verticales_promedio_tarjeta_rojas.png', dpi=300)
-    # Mostramos el gráfico en pantalla.
-    plt.show()
+    
+    # 3. EN LUGAR DE SHOW() O SAVEFIG(), SE RENDERIZA EN STREAMLIT:
+    st.pyplot(fig)
+
+
+
 
 
     
