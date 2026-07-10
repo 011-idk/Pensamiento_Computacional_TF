@@ -269,13 +269,14 @@ elif opciones == 'Game':
 elif opciones == 'Estadísticas':
     st.markdown("<h2 style='text-align: center;'>Gráficos y demás</h2>", unsafe_allow_html=True)   
    
-    st.markdown("Este módulo compara el rendimiento acumulado en `vistas_yt` entre las diferentes compañías discográficas registradas en `Musica_BD.xlsx`.")
+    st.markdown("Este módulo compara, a partir de las vistas, el exito de las canciones en las que participo Sabrina Carpenter como parte de 
+    Hollywood Records, Island Record e incluso Warner Records como parte de una colaboración.")
     
     import matplotlib.pyplot as plt
 
     # 1. Carga de datos
     df_comparativa = pd.read_excel("Musica_BD.xlsx")
-    df_comparativa['vistas_yt'] = pd.to_numeric(df['vistas_yt'], errors='coerce')
+    df_comparativa['vistas_yt'] = pd.to_numeric(df_comparativa['vistas_yt'], errors='coerce')
     df_comparativa= df.dropna(subset=['vistas_yt', 'Disquera'])
     
     # 2. TU LÓGICA: Agrupar por Disquera y sacar el promedio de vistas_yt
