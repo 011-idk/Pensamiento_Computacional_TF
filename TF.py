@@ -353,7 +353,7 @@ elif opciones == 'Estadísticas':
     # 3. RENDERIZADO EN STREAMLIT:
     st.pyplot(fig)
 
-     st.markdown("---")
+    st.markdown("---")
 
     texto_locacion = """
     Lugares en donde se grabaron lso videos musicales de Sabrina Carpenter.
