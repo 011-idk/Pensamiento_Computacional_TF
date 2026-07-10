@@ -26,8 +26,7 @@ if opciones == 'Presentación':
     
    # Define una cadena de texto multilínea que contiene una guía para redactar una presentación personal.
     texto = """
-    Aquí escribe una presentación sobre el blog
-    # ¡Bienvenidos! Este blog está dedicado a conocer y explorar la trayectoria de **Sabrina Carpenter**, tanto en su faceta como actriz como en su carrera musical. Aquí encontrarás información sobre
+    ¡Bienvenidos! Este blog está dedicado a conocer y explorar la trayectoria de **Sabrina Carpenter**, tanto en su faceta como actriz como en su carrera musical. Aquí encontrarás información sobre
     su discografía desde sus inicos hasta los últimos lanzamientos, así como de sus películas y series más recordadas o que quiza no conocias. 
     
     Este blog está organizado en diferentes secciones. En la sección de **Discografía** encontraras una compilación de las canciones de Sabrina Carpenter, etres albums, sensillos y demás. En la 
