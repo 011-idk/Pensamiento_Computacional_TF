@@ -168,6 +168,76 @@ elif opciones == 'Filmografía':
 elif opciones == 'Games':
     st.markdown("<h2 style='text-align: center;'>Juegos Lúdicos</h2>", unsafe_allow_html=True)   
 
+    import streamlit as st
+    import random
+    
+    st.title("Juego del Ahorcado (Sabrina's Version)")
+    
+    # Lista de palabras
+    lista_canciones_producciones = ["asdfe", "computadora", 
+                        "indentación", "iteradores", "declaración", "asignación", "anidación"]
+    
+    # Inicializamos las variables en el estado de la sesión (Session State) para que no se reinicien
+    if "palabra_secreta" not in st.session_state:
+        st.session_state.palabra_secreta = random.choice(palabras_python)
+        st.session_state.letras_adivinadas = []
+        st.session_state.intentos = 0
+        st.session_state.intentos_maximos = 5
+    
+    intentos_maximos = st.session_state.intentos_maximos
+    palabra_secreta = st.session_state.palabra_secreta
+    
+    # Barra lateral para el estado del juego
+    st.sidebar.markdown(f"**Intentos fallidos:** {st.session_state.intentos} / {intentos_maximos}")
+    st.sidebar.markdown(f"**Letras probadas:** {', '.join(st.session_state.letras_adivinadas)}")
+    
+    # Mostrar palabra oculta
+    palabra_mostrada = ""
+    for letra in palabra_secreta:
+        if letra in st.session_state.letras_adivinadas:
+            palabra_mostrada += letra + " "
+        else:
+            palabra_mostrada += "_ "
+    
+    st.subheader(f"La palabra tiene {len(palabra_secreta)} letras:")
+    st.markdown(f"### {palabra_mostrada}")
+    
+    # Control de fin del juego
+    if st.session_state.intentos >= intentos_maximos:
+        st.error(f"¡Game Over! Te quedaste sin intentos. La palabra era: **{palabra_secreta}**")
+    elif "_" not in palabra_mostrada.replace(" ", ""):
+        st.success("¡Felicidades! ¡Has adivinado la palabra!")
+    else:
+        # Entrada de texto usando un formulario para presionar Enter cómodamente
+        with st.form("form_juego", clear_on_submit=True):
+            intento = st.text_input("Adivina una letra:", max_chars=1)
+            submit_boton = st.form_submit_button("Probar")
+    
+        if submit_boton:
+            intento = intento.lower()
+            
+            if len(intento) != 1:
+                st.warning("Por favor, ingresa una sola letra válida.")
+            elif intento in st.session_state.letras_adivinadas:
+                st.info("Ya adivinaste/probaste esa letra.")
+            else:
+                st.session_state.letras_adivinadas.append(intento)
+                
+                if intento in palabra_secreta:
+                    st.success("¡Bien hecho!")
+                else:
+                    st.session_state.intentos += 1
+                    st.error("Letra incorrecta.")
+                
+                st.rerun() # Actualiza la página para mostrar los cambios
+    
+    # Botón para reiniciar
+    if st.button("Reiniciar Juego"):
+        st.session_state.palabra_secreta = random.choice(palabras_python)
+        st.session_state.letras_adivinadas = []
+        st.session_state.intentos = 0
+        st.rerun()
+
 
 
 
