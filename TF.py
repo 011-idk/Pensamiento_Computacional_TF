@@ -353,8 +353,71 @@ elif opciones == 'Estadísticas':
     # 3. RENDERIZADO EN STREAMLIT:
     st.pyplot(fig)
 
+     st.markdown("---")
+
+    texto_locacion = """
+    Lugares en donde se grabaron lso videos musicales de Sabrina Carpenter.
+
+    Dato curioso: La mayoria de sus videos se grabaron en Los Ángeles, Californa. Al ser grabaciones cerradas, se desconocer el lugar específico en el cual se
+    realizaron, mayoritariamente.
+    """
+    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locación}</div>", unsafe_allow_html=True)
+    st.write("---") 
+   
+    # 1. Carga directa de los datos (sin st.cache_data)
+    df_musica = pd.read_excel("Musica_BD.xlsx")
+
+    # 2. Extracción y limpieza para el mapa (coordenadas únicas)
+    # Quitamos filas vacías y eliminamos duplicados en las coordenadas
+    df_mapa = df_musica[['Grabación_lugar', 'Coordenas']].dropna().drop_duplicates(subset=['Coordenas'])
+
+    st.subheader("Ubicaciones de Grabación")
+
+    # Crear el mapa base de Folium
+    mapa = folium.Map(location=[15.0, -30.0], zoom_start=2)
+
+    # Recorrer las filas únicas para colocar los marcadores
+    for _, fila in df_mapa.iterrows():
+        lugar = fila['Grabación_lugar']
+        coordenadas_str = str(fila['Coordenas'])
+        
+            # Separamos el texto "latitud, longitud" por la coma y lo convertimos a números float
+            lat, lon = map(float, coordenadas_str.split(','))
+            
+            if pd.notna(lat) and pd.notna(lon):
+                contenido = f"<b>Lugar:</b> {lugar}"
+                
+                folium.Marker(location=[lat, lon], popup=folium.Popup(contenido, max_width=300), icon=folium.Icon(color='cadetblue', icon='music')).add_to(mapa)
+       
+    # Mostrar el mapa interactivo en Streamlit
+    st_folium(mapa, width=1000, height=500, returned_objects=[])
+
+    st.markdown("---")
+
+    # 3. Sección de canciones con videoclip (MV) debajo del mapa
+    st.subheader("Buscador de Videoclips")
+
+    # Filtramos las canciones que tienen un link de video válido
+    df_videos = df_musica[['canciones', 'MV', 'Link_mv']].dropna(subset=['Link_mv'])
+
+    if not df_videos.empty:
+        # Menú desplegable con las canciones únicas que tienen video
+        cancion_seleccionada = st.selectbox("Selecciona una canción para ver su videoclip:", options=df_videos['canciones'].unique())
+
+        # Extraemos la información de la canción seleccionada
+        info_cancion = df_videos[df_videos['canciones'] == cancion_seleccionada].iloc[0]
+
+        # Mostramos los datos en pantalla
+        st.write(f"**Canción:** {info_cancion['canciones']}")
+        st.write(f"**Detalle del MV:** {info_cancion['MV']}")
+        
+        # Enlace directo para abrir el video
+        st.markdown(f"[➡️ Ver Videoclip en este enlace]({info_cancion['Link_mv']})")
+    else:
+        st.warning("No se encontraron canciones con enlaces de videoclips en el archivo.")
 
 
+   
 
 
 
