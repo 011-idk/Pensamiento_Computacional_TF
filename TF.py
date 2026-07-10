@@ -356,7 +356,7 @@ elif opciones == 'Estadísticas':
     st.markdown("---")
 
     texto_locacion = """
-    Lugares en donde se grabaron lso videos musicales de Sabrina Carpenter.
+    Lugares en donde se grabaron los videos musicales de Sabrina Carpenter.
     Dato curioso: La mayoria de sus videos se grabaron en Los Ángeles, Californa. Al ser grabaciones cerradas, se desconocer el lugar específico en el cual se
     realizaron, mayoritariamente.
     """
@@ -368,7 +368,7 @@ elif opciones == 'Estadísticas':
 
     # 2. Extracción y limpieza para el mapa (coordenadas únicas)
     # Quitamos filas vacías y eliminamos duplicados en las coordenadas
-    df_mapa = df_musica['Grabación_lugar', 'Coordenas'].dropna().drop_duplicates(subset=['Coordenas'])
+    df_mapa = df_musica[Grabación_lugar, Coordenas].dropna().drop_duplicates(subset=['Coordenas'])
 
     st.subheader("Ubicaciones de Grabación")
 
