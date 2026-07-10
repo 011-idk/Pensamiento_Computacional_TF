@@ -165,17 +165,15 @@ elif opciones == 'Filmografía':
             st.divider()  # Línea de separación sutil entre cada producción
 
 
-elif opciones == 'Games':
-    st.markdown("<h2 style='text-align: center;'>Juegos Lúdicos</h2>", unsafe_allow_html=True)   
+elif opciones == 'Game':
+    st.markdown("<h2 style='text-align: center;'>¡Ahora de jugar!</h2>", unsafe_allow_html=True)   
 
     texto_recomendacion = """
     Recomendación: Si es tu primer acercamiento a la carrera artistica de Sabrina Carpenter revisa la sección de filmografía
-    antes de empezar a jugar, mucha suerte!!!!
+    antes de empezar a jugar. Ten en cuenta que los títulos estan en el idioma original, en este caso la mayoria estan en inglés. Mucha suerte!!!!
     """
     st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_recomendacion}</div>", unsafe_allow_html=True)
-
-    st.write("---")
-   
+    st.write("---") 
         
     # Importamos la líbrería random
     import random
@@ -187,7 +185,6 @@ elif opciones == 'Games':
                       "Work It", "Clouds", "Emergency", "Tall Girl 2", "That's Not How This Works (short film)", "A Nonsense Christmas with Sabrina Carpenter", 
                       "Saturday Night Live", "Taylor Swift: The End of an Era", "The Muppet Show", "Confessions II - The Film"]
     
-
     
     # 2. INICIALIZACIÓN SEGURA DEL ESTADO DE LA SESIÓN
     if "produccion_secreta" not in st.session_state:
@@ -268,6 +265,9 @@ elif opciones == 'Games':
         st.session_state.producciones_adivinadas = []
         st.session_state.intentos = 0
         st.rerun()
+
+elif opciones == 'Graficos':
+    st.markdown("<h2 style='text-align: center;'>Juegos Lúdicos</h2>", unsafe_allow_html=True)   
 
 
 
