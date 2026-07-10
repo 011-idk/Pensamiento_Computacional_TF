@@ -108,9 +108,9 @@ elif opciones == 'Filmografía':
     st.markdown("<h2 style='text-align: center;'>Carrea Actoral</h2>", unsafe_allow_html=True)
 
     texto_actriz = """
-    Sabrina Carpenter ha construido una carrera actoral polifacética y en constante evolución desde muy joven. 
-    Comenzó con participaciones memorables en series de televisión y alcanzó gran popularidad internacional gracias a su papel protagónico en Disney Channel. 
-    Posteriormente, demostró su madurez interpretativa liderando largometrajes cinematográficos, producciones musicales en formato corto y prestando su voz para universos animados, consolidándose como una artista integral en la industria del entretenimiento.
+    Sabrina Carpenter inicio en el mundo de la actuación a la edad de 11 años y desde entonces ha  participado en diversas producciones audiovisuales, 
+    contruyendo un carrera actoral polifacética y en constante evolución. Sus primeras participaciones se dieron en series de televisión, más no fue hasta entrar a
+    Disney que alcanzó gran popularidad internacional. Esto la a cnsolidado como una artista integral en la industria del entretenimiento.
     """
 
     st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_actriz}</div>", unsafe_allow_html=True)
