@@ -199,7 +199,7 @@ elif opciones == 'Games':
     
     # Con la función print() damos la bievenida al juego y le incamos al jugador cuántas letras debe adivinar.
     print("¡Bienvenido al juego del Ahorcado (Sabrina's Ver)!")
-    print("La palabra tiene", len(palabra_secreta), "letras.")
+    print("La palabra tiene", len(produccion_secreta), "letras.")
     
     # Con el bucle while generamos iteraciones sobre los intentos que tiene el jugar tomando como punto límite los intentos máximos
     while intentos < intentos_maximos:
