@@ -266,11 +266,16 @@ elif opciones == 'Game':
         st.session_state.intentos = 0
         st.rerun()
 
+
 elif opciones == 'Estadísticas':
     st.markdown("<h2 style='text-align: center;'>Gráficos y demás</h2>", unsafe_allow_html=True)   
    
-    st.markdown("Este módulo compara, a partir de las vistas, el exito de las canciones en las que participo Sabrina Carpenter como parte de 
-    Hollywood Records, Island Record e incluso Warner Records como parte de una colaboración.")
+texto_detalles = """
+    Comparativa del éxito de las canciones de Sabrina Carpenter, tanto suyas como en las que participo, fromando parte de la disqueda Hollywood Records e 
+    Islando Records segun las vistas de cada canción. 
+    """
+    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_detalles}</div>", unsafe_allow_html=True)
+    st.write("---") 
     
     import matplotlib.pyplot as plt
 
