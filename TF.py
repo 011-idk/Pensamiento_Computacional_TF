@@ -285,7 +285,7 @@ elif opciones == 'Estadísticas':
     df_comparativa= df_comparativa.dropna(subset=['vistas_yt', 'Disquera'])
     
     # 2. TU LÓGICA: Agrupar por Disquera y sacar el promedio de vistas_yt
-    promedio_vistas_disquera = df.groupby('Disquera')['vistas_yt'].mean()
+    promedio_vistas_disquera = df_comparativa.groupby('Disquera')['vistas_yt'].mean()
     
     # Creamos la figura explícitamente para Streamlit (Tamaño 10, 6)
     fig, ax = plt.subplots(figsize=(10, 6))
