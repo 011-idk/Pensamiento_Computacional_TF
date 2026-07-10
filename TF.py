@@ -382,12 +382,12 @@ elif opciones == 'Estadísticas':
         coordenadas_str = str(fila['Coordenas'])
         
             # Separamos el texto "latitud, longitud" por la coma y lo convertimos a números float
-            lat, lon = map(float, coordenadas_str.split(','))
+        lat, lon = map(float, coordenadas_str.split(','))
             
-            if pd.notna(lat) and pd.notna(lon):
-                contenido = f"<b>Lugar:</b> {lugar}"
+        if pd.notna(lat) and pd.notna(lon):
+            contenido = f"<b>Lugar:</b> {lugar}"
                 
-                folium.Marker(location=[lat, lon], popup=folium.Popup(contenido, max_width=300), icon=folium.Icon(color='cadetblue', icon='music')).add_to(mapa)
+            folium.Marker(location=[lat, lon], popup=folium.Popup(contenido, max_width=300), icon=folium.Icon(color='cadetblue', icon='music')).add_to(mapa)
        
     # Mostrar el mapa interactivo en Streamlit
     st_folium(mapa, width=1000, height=500, returned_objects=[])
