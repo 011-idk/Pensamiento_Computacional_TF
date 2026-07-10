@@ -379,7 +379,7 @@ elif opciones == 'Estadísticas':
     for _, fila in df_mapa.iterrows():
     
         # Convertimos a texto y eliminamos los paréntesis '(' y ')' si existen
-        coor_limpia = str(fila['Coordenas']).replace('(', '').replace(')', '')
+        coor_limpia = str(fila['Coordenadas']).replace('(', '').replace(')', '')
             
         # Ahora sí separamos por coma y convertimos a número
         lat, lon = map(float, coor_limpia.split(','))
