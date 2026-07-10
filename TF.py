@@ -375,7 +375,7 @@ elif opciones == 'Estadísticas':
     # Crear el mapa base de Folium
     mapa = folium.Map(location=[15.0, -30.0], zoom_start=2)
 
-     Recorrer las filas limpiando los paréntesis antes de separar
+    #Recorrer las filas limpiando los paréntesis antes de separar
     for _, fila in df_mapa.iterrows():
         try:
             # Convertimos a texto y eliminamos los paréntesis '(' y ')' si existen
