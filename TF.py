@@ -187,59 +187,77 @@ elif opciones == 'Games':
                       "Work It", "Clouds", "Emergency", "Tall Girl 2", "That's Not How This Works (short film)", "A Nonsense Christmas with Sabrina Carpenter", 
                       "Saturday Night Live", "Taylor Swift: The End of an Era", "The Muppet Show", "Confessions II - The Film"]
     
-        
-    produccion_secreta = random.choice(lista_producciones)
+
     
-    # Corrección: Inicializamos la lista correcta
-    producciones_adivinadas = []
-    intentos_maximos = 3
-    intentos = 0
+    # 2. INICIALIZACIÓN SEGURA DEL ESTADO DE LA SESIÓN
+    if "produccion_secreta" not in st.session_state:
+        st.session_state.produccion_secreta = random.choice(lista_producciones)
+    if "producciones_adivinadas" not in st.session_state:
+        st.session_state.producciones_adivinadas = []
+    if "intentos" not in st.session_state:
+        st.session_state.intentos = 0
+    if "intentos_maximos" not in st.session_state:
+        st.session_state.intentos_maximos = 3
     
-    print("¡Bienvenido al juego del Ahorcado (Sabrina's Ver)!")
-    print("La producción tiene", len(produccion_secreta), "caracteres.")
+    # Asignación a variables locales para facilitar la lectura
+    intentos_maximos = st.session_state.intentos_maximos
+    produccion_secreta = st.session_state.produccion_secreta
     
-    while intentos < intentos_maximos:
-        for letra in produccion_secreta:
-            # Corrección: Revelamos automáticamente espacios y caracteres especiales no alfabéticos
-            if letra in producciones_adivinadas or not letra.isalpha(): 
-                print(letra, end=" ")
-            else: 
-                print("_", end=" ")
-        print()  
+    # 3. INTERFAZ LATERAL (Muestra estadísticas de forma estática)
+    st.sidebar.markdown(f"**Intentos fallidos:** {st.session_state.intentos} / {intentos_maximos}")
+    st.sidebar.markdown(f"**Letras probadas:** {', '.join(st.session_state.producciones_adivinadas)}")
     
-        intento = input("Adivina una letra: ").lower() # Convertimos a minúscula para evitar fallos
+    # 4. CONSTRUCCIÓN DE LA PALABRA OCULTA
+    palabra_mostrada = ""
+    for letra in produccion_secreta:
+        if not letra.isalpha(): 
+            palabra_mostrada += letra + " "  # Muestra espacios, números y símbolos directamente
+        elif letra.lower() in st.session_state.producciones_adivinadas:
+            palabra_mostrada += letra + " "
+        else:
+            palabra_mostrada += "_ "
     
-        if len(intento) != 1 or not intento.isalpha():
-            print("Por favor, ingresa una sola letra válida.")
-            continue
+    st.subheader("Adivina la producción cinematográfica o televisiva:")
+    st.markdown(f"### {palabra_mostrada}")
     
-        # Corrección: Usamos el nombre de variable correcto (producciones_adivinadas)
-        if intento in producciones_adivinadas:
-            print("Ya adivinaste esa letra.")
-            continue
+    # 5. CONTROL DE FIN DE JUEGO O ENTRADA DE DATOS
+    if st.session_state.intentos >= intentos_maximos:
+        st.error(f"💥 ¡Game Over! Agotaste tus {intentos_maximos} intentos. La producción era: **{produccion_secreta}**")
+    elif "_" not in palabra_mostrada:
+        st.success("🎉 ¡Felicidades! ¡Has adivinado la producción con éxito!")
+    else:
+        # INPUT TRADICIONAL SIN FORMULARIO (Elimina problemas de recarga en cascada)
+        intento = st.text_input("Adivina una letra (escribe y presiona Enter):", max_chars=1, key="input_letra")
     
-        producciones_adivinadas.append(intento)
+        if intento:
+            letra_ingresada = intento.lower()
+            
+            # Validación de caracteres válidos
+            if not letra_ingresada.isalpha():
+                st.warning("Por favor, ingresa una sola letra válida.")
+            elif letra_ingresada in st.session_state.producciones_adivinadas:
+                st.info("Ya probaste esa letra.")
+            else:
+                # Guardamos la letra en la lista global
+                st.session_state.producciones_adivinadas.append(letra_ingresada)
+                
+                # Evaluamos si falló o acertó
+                if letra_ingresada in produccion_secreta.lower():
+                    st.toast("¡Bien hecho! Letra correcta.", icon="✅")
+                else:
+                    st.session_state.intentos += 1
+                    st.toast("Letra incorrecta.", icon="❌")
+                
+                # Limpiamos el input forzando una recarga limpia para refrescar la interfaz
+                st.rerun()
     
-        # Corrección: Comparamos en minúsculas para que detecte mayúsculas del título
-        if intento in produccion_secreta.lower():
-            print("¡Bien hecho!")
-        else: 
-            intentos += 1
-            print("Letra incorrecta. Te quedan", intentos_maximos - intentos, "intentos.")
-    
-        produccion_completa = True
-        for letra in produccion_secreta: 
-            # Si es una letra y no ha sido adivinada, la producción no está completa
-            if letra.isalpha() and letra.lower() not in producciones_adivinadas: 
-                produccion_completa = False
-                break 
-    
-        if produccion_completa: 
-            print("\n🎉 ¡Felicidades! Adivinaste la palabra:", produccion_secreta)
-            break
-    else: 
-        print("\n💥 ¡Has perdido!")
-        print("La palabra era:", produccion_secreta)
+    # 6. BOTÓN DE REINICIO
+    st.markdown("---")
+    if st.button("🔄 Reiniciar Juego / Siguiente Palabra"):
+        st.session_state.produccion_secreta = random.choice(lista_producciones)
+        st.session_state.producciones_adivinadas = []
+        st.session_state.intentos = 0
+        st.rerun()
 
 
 
