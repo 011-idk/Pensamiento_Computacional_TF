@@ -278,25 +278,43 @@ elif opciones == 'Estadísticas':
     st.write("---") 
     
     import matplotlib.pyplot as plt
-
     # 1. Carga de datos
     df_comparativa = pd.read_excel("Musica_BD.xlsx")
-    # Convertimos a texto, eliminamos las comas que confunden a Python y aseguramos que no queden espacios vacíos
+    
+    # Convertimos a texto y eliminamos posibles comas de miles que confundan a Python
     df_comparativa['vistas_yt'] = df_comparativa['vistas_yt'].astype(str).str.replace(',', '', regex=False)
- 
-    # Ahora la conversión numérica interpretará el valor real (ej. "40967" pasará a ser 40967 enteros)
+    
+    # Conversión numérica limpia
     df_comparativa['vistas_yt'] = pd.to_numeric(df_comparativa['vistas_yt'], errors='coerce')
     df_comparativa = df_comparativa.dropna(subset=['vistas_yt', 'Disquera'])
     
+    # --- CORRECCIÓN EXTRA DE SEGURIDAD ---
+    if df_comparativa['vistas_yt'].mean() < 100:
+        df_comparativa['vistas_yt'] = df_comparativa['vistas_yt'] * 1000
+    
     # 2. LÓGICA: Agrupar por Disquera y sacar el promedio de vistas_yt
-    promedio_vistas_disquera = df_comparativa.groupby('Disquera')['vistas_yt'].mean().sort_values(ascending=False)
+    promedio_vistas_disquera = df_comparativa.groupby('Disquera')['vistas_yt'].mean()
     
-    # Creamos la figura explícitamente para Streamlit (Tamaño 10, 6)
-    fig, ax = plt.subplots(figsize=(10, 6))
+    # --- FILTRO EXCLUSIVO PARA DOS DISQUERAS ---
+    # Convertimos el resultado a DataFrame para poder filtrar por el nombre de la disquera
+    df_filtrado = promedio_vistas_disquera.reset_index()
     
-    # Dibujamos las barras verticales de color morado ('purple')
-    promedio_vistas_disquera.plot(kind='bar', ax=ax, color='purple', width=0.7)
-
+    # Filtramos para quedarnos UNICAMENTE con Hollywood Records e Island Records
+    disqueras_a_comparar = ["Hollywood Records", "Island Records"]
+    df_filtrado = df_filtrado[df_filtrado['Disquera'].isin(disqueras_a_comparar)]
+    
+    # Volvemos a poner 'Disquera' como índice y ordenamos de mayor a menor
+    promedio_dos_disqueras = df_filtrado.set_index('Disquera')['vistas_yt'].sort_values(ascending=False)
+        
+    # --- ESCALA A MILES ---
+    promedio_dos_disqueras = promedio_dos_disqueras / 1000
+    
+    # Creamos la figura explícitamente para Streamlit (Tamaño 8, 5 para que no sea tan gigante al ser solo 2 barras)
+    fig, ax = plt.subplots(figsize=(8, 5))
+    
+    # Dibujamos las barras verticales (puedes usar un color llamativo)
+    promedio_dos_disqueras.plot(kind='bar', ax=ax, color='#6C5CE7', width=0.4) # Reducimos width a 0.4 para que las 2 barras no se vean tan anchas
+    
     # [CORRECCIÓN 1] Eliminamos los bordes superior, derecho e izquierdo de la caja
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
@@ -308,29 +326,30 @@ elif opciones == 'Estadísticas':
     # [CORRECCIÓN 2] Suavizamos la cuadrícula horizontal reduciendo alpha a 0.2 y aclarando el color
     ax.grid(axis='y', linestyle='--', alpha=0.2, color='#636E72')
     
-    # [CORRECCIÓN 3] Enviamos la cuadrícula al fondo para que no cruce por encima de las barras
+    # [CORRECCIÓN 3] Enviamos la cuadrícula al fondo
     ax.set_axisbelow(True)
     
-    
     # Agregamos título al gráfico
-    plt.title('Musica_BD: Promedio de vistas en YouTube por Disquera', fontsize=13, fontweight='bold', color='#2D3436', pad=15)
+    plt.title('Comparativa: Hollywood Records vs Island Records', fontsize=13, fontweight='bold', color='#2D3436', pad=15)
     # Etiqueta del eje X
     plt.xlabel('Disquera', fontsize=10, color='#636E72', labelpad=10)
     # Etiqueta del eje Y
-    plt.ylabel('Promedio de vistas obtenidas', fontsize=10, color='#636E72', labelpad=10)
+    plt.ylabel('Promedio de vistas obtenidas (en miles)', fontsize=10, color='#636E72', labelpad=10)
     
-    # Estilizamos los nombres de los ejes y quitamos las pequeñas líneas de graduación de la izquierda (ticks)
-    plt.xticks(rotation=45, ha='right', fontsize=9, color='#2D3436')
+    # Estilizamos los nombres de los ejes (Al ser solo 2 nombres, rotación 0 es más estético)
+    plt.xticks(rotation=0, fontsize=10, color='#2D3436')
     plt.yticks(fontsize=9, color='#636E72')
     ax.tick_params(axis='y', left=False) 
     ax.tick_params(axis='x', colors='#DCDDE1')
-    # CORRECCIÓN 5] Quitamos el fondo blanco rígido para acoplarse fluidamente al tema de Streamlit
+    
+    # Quitamos el fondo blanco rígido para acoplarse al tema de Streamlit
     fig.patch.set_alpha(0.0)
     ax.patch.set_alpha(0.0)
+    
     # Ajustamos automáticamente los espacios
     plt.tight_layout()
     
-    # 3. EN LUGAR DE SHOW() O SAVEFIG(), SE RENDERIZA EN STREAMLIT:
+    # 3. RENDERIZADO EN STREAMLIT:
     st.pyplot(fig)
 
 
