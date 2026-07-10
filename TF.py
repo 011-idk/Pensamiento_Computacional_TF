@@ -241,6 +241,8 @@ elif opciones == 'Games':
         print("\n💥 ¡Has perdido!")
         print("La palabra era:", produccion_secreta)
 
+
+
     
 
 
