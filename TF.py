@@ -26,16 +26,15 @@ if opciones == 'Presentación':
     
    # Define una cadena de texto multilínea que contiene una guía para redactar una presentación personal.
     texto = """
-    ¡Bienvenidos! Este blog está dedicado a conocer y explorar la trayectoria de **Sabrina Carpenter**, tanto en su faceta como actriz como en su carrera musical. Aquí encontrarás información sobre
+    ¡Bienvenidos! Este blog está dedicado a conocer y explorar la trayectoria de Sabrina Carpenter, tanto en su faceta como actriz como en su carrera musical. Aquí encontrarás información sobre
     su discografía desde sus inicos hasta los últimos lanzamientos, así como de sus películas y series más recordadas o que quiza no conocias. 
     
-    Este blog está organizado en diferentes secciones. En la sección de **Discografía** encontraras una compilación de las canciones de Sabrina Carpenter, etres albums, sensillos y demás. En la 
-    sección de **Filmografía** encontrarás información sobre los productos audiovisuales en los que ha participado tanto peliculas, series, incluso especiales de TV. También esta la sección **Games** en 
-    donde podrás jugar el famoso juego del ahorcado basado en las producciones en las que ha participado la artista. Finalmente tenemos la sección **Espresso**, en la cual podrás encontrar un grafico comparativo, 
+    Este blog está organizado en diferentes secciones. En la sección de Discografía encontraras una compilación de las canciones de Sabrina Carpenter, etres albums, sensillos y demás. En la 
+    sección de Filmografía encontrarás información sobre los productos audiovisuales en los que ha participado tanto peliculas, series, incluso especiales de TV. También esta la sección Games en 
+    donde podrás jugar el famoso juego del ahorcado basado en las producciones en las que ha participado la artista. Finalmente tenemos la sección Espresso, en la cual podrás encontrar un grafico comparativo, 
     un mapa interactivo, y podrás ver elegir entre videoclips de las canciones de Sabrina Carpenter e ir directo a verlos.
 
     Espero que disfrutes recorriendo este espacio y que encuentres información interesante sobre una de las artistas más destacadas de su generación. ¡Gracias!
-    
     """
     # Mostramos el texto de presentación debajo de la imagen utilizando HTML
     st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{texto}</div>", unsafe_allow_html=True)
