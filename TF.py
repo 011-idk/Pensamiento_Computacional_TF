@@ -285,26 +285,44 @@ elif opciones == 'Estadísticas':
     df_comparativa= df_comparativa.dropna(subset=['vistas_yt', 'Disquera'])
     
     # 2. TU LÓGICA: Agrupar por Disquera y sacar el promedio de vistas_yt
-    promedio_vistas_disquera = df_comparativa.groupby('Disquera')['vistas_yt'].mean()
+    promedio_vistas_disquera = df_comparativa.groupby('Disquera')['vistas_yt'].mean().sort_values(ascending=False)
     
     # Creamos la figura explícitamente para Streamlit (Tamaño 10, 6)
     fig, ax = plt.subplots(figsize=(10, 6))
     
     # Dibujamos las barras verticales de color morado ('purple')
-    promedio_vistas_disquera.plot(kind='bar', ax=ax, color='purple')
+    promedio_vistas_disquera.plot(kind='bar', ax=ax, color='purple', width=0.7)
+
+    # [CORRECCIÓN 1] Eliminamos los bordes superior, derecho e izquierdo de la caja
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_visible(False)
+    
+    # Suavizamos el borde inferior (eje X) pasándolo a un gris muy sutil
+    ax.spines['bottom'].set_color('#DCDDE1')
+    
+    # [CORRECCIÓN 2] Suavizamos la cuadrícula horizontal reduciendo alpha a 0.2 y aclarando el color
+    ax.grid(axis='y', linestyle='--', alpha=0.2, color='#636E72')
+    
+    # [CORRECCIÓN 3] Enviamos la cuadrícula al fondo para que no cruce por encima de las barras
+    ax.set_axisbelow(True)
+    
     
     # Agregamos título al gráfico
-    plt.title('Musica_BD: Promedio de vistas en YouTube por Disquera', fontsize=12, fontweight='bold')
+    plt.title('Musica_BD: Promedio de vistas en YouTube por Disquera', fontsize=13, fontweight='bold', color='#2D3436', pad=15)
     # Etiqueta del eje X
-    plt.xlabel('Disquera', fontsize=10)
+    plt.xlabel('Disquera', fontsize=10, color='#636E72', labelpad=10)
     # Etiqueta del eje Y
-    plt.ylabel('Promedio de vistas obtenidas', fontsize=10)
+    plt.ylabel('Promedio de vistas obtenidas', fontsize=10, color='#636E72', labelpad=10)
     
-    # Rotamos los nombres de las disqueras a 75 grados
-    plt.xticks(rotation=75, ha='right')
-    # Agregamos la cuadrícula horizontal idéntica a tu código
-    plt.grid(axis='y', linestyle='--', alpha=1)
-    
+    # Estilizamos los nombres de los ejes y quitamos las pequeñas líneas de graduación de la izquierda (ticks)
+    plt.xticks(rotation=45, ha='right', fontsize=9, color='#2D3436')
+    plt.yticks(fontsize=9, color='#636E72')
+    ax.tick_params(axis='y', left=False) 
+    ax.tick_params(axis='x', colors='#DCDDE1')
+    # CORRECCIÓN 5] Quitamos el fondo blanco rígido para acoplarse fluidamente al tema de Streamlit
+    fig.patch.set_alpha(0.0)
+    ax.patch.set_alpha(0.0)
     # Ajustamos automáticamente los espacios
     plt.tight_layout()
     
