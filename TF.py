@@ -168,75 +168,86 @@ elif opciones == 'Filmografía':
 elif opciones == 'Games':
     st.markdown("<h2 style='text-align: center;'>Juegos Lúdicos</h2>", unsafe_allow_html=True)   
 
-    import streamlit as st
+    texto_recomendacion = """
+    Recomendación: Si es tu primer acercamiento a la carrera artistica de Sabrina Carpenter revisa la sección de filmografía
+    antes de empezar a jugar, mucha suerte!!!!
+    """
+    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_actriz}</div>", unsafe_allow_html=True)
+
+    st.write("---")
+   
+        
+    # Importamos la líbrería random
     import random
     
-    st.title("Juego del Ahorcado (Sabrina's Version)")
+    # Creamos una lista
+    lista_producciones = ["Law & Order: Special Victims Unit", "Just Dance Kids 2", "Phineas and Ferb", "The Unprofessional", "The Goodwin Games", 
+                       "Orange Is the New Black", "Horns", "Austin & Ally", "Wander Over Yonder", "Walk the Prank", "Adventure in Babysitting", "Girls Meets World", 
+                      "Soy Luna", "Mickey and the Roadster Racers", "Sofia the First", "The Short History of the Long Road", "Milo Murphy's Law", "Tall Girl", "Royalties", 
+                      "Work It", "Clouds", "Emergency", "Tall Girl 2", "That's Not How This Works (short film)", "A Nonsense Christmas with Sabrina Carpenter", 
+                      "Saturday Night Live", "Taylor Swift: The End of an Era", "The Muppet Show", "Confessions II - The Film"]
     
-    # Lista de palabras
-    lista_canciones_producciones = ["asdfe", "computadora", 
-                        "indentación", "iteradores", "declaración", "asignación", "anidación"]
+    # Elegir palabra aleatoria de la lista creada previamente
+    produccion_secreta = random.choice(lista_producciones)
     
-    # Inicializamos las variables en el estado de la sesión (Session State) para que no se reinicien
-    if "palabra_secreta" not in st.session_state:
-        st.session_state.palabra_secreta = random.choice(palabras_python)
-        st.session_state.letras_adivinadas = []
-        st.session_state.intentos = 0
-        st.session_state.intentos_maximos = 5
+    # Creamos una lista vacía para guardar los caracteres adivinados
+    producciones_adivinadas = []
     
-    intentos_maximos = st.session_state.intentos_maximos
-    palabra_secreta = st.session_state.palabra_secreta
+    # Creamos dos variables donde se asignarán los intentos máximos y el número de intento en el que nos encontramos
+    intentos_maximos = 3
+    intentos = 0
     
-    # Barra lateral para el estado del juego
-    st.sidebar.markdown(f"**Intentos fallidos:** {st.session_state.intentos} / {intentos_maximos}")
-    st.sidebar.markdown(f"**Letras probadas:** {', '.join(st.session_state.letras_adivinadas)}")
+    # Con la función print() damos la bievenida al juego y le incamos al jugador cuántas letras debe adivinar.
+    print("¡Bienvenido al juego del Ahorcado (Sabrina's Ver)!")
+    print("La palabra tiene", len(palabra_secreta), "letras.")
     
-    # Mostrar palabra oculta
-    palabra_mostrada = ""
-    for letra in palabra_secreta:
-        if letra in st.session_state.letras_adivinadas:
-            palabra_mostrada += letra + " "
-        else:
-            palabra_mostrada += "_ "
+    # Con el bucle while generamos iteraciones sobre los intentos que tiene el jugar tomando como punto límite los intentos máximos
+    while intentos < intentos_maximos:
+        # Con el bucle for generamos una iteración de la letra adivinada según el contenido de la palabra secreta
+        for letra in produccion_secreta:
+            if letra in producciones_adivinadas: # Evalúa si la letra actual ya ha sido adivinada
+                print(letra, end=" ")
+            else: # Si no se indica que esa letra aún está oculta
+                print("_", end=" ")
+        print()  # salto de línea
     
-    st.subheader(f"La palabra tiene {len(palabra_secreta)} letras:")
-    st.markdown(f"### {palabra_mostrada}")
+        intento = input("Adivina una letra: ")
     
-    # Control de fin del juego
-    if st.session_state.intentos >= intentos_maximos:
-        st.error(f"¡Game Over! Te quedaste sin intentos. La palabra era: **{palabra_secreta}**")
-    elif "_" not in palabra_mostrada.replace(" ", ""):
-        st.success("¡Felicidades! ¡Has adivinado la palabra!")
-    else:
-        # Entrada de texto usando un formulario para presionar Enter cómodamente
-        with st.form("form_juego", clear_on_submit=True):
-            intento = st.text_input("Adivina una letra:", max_chars=1)
-            submit_boton = st.form_submit_button("Probar")
+        # Verifica que el jugador solo haya ingresado una caracter
+        if len(intento) != 1:
+            print("Por favor, ingresa una sola letra válida.")
+            continue
     
-        if submit_boton:
-            intento = intento.lower()
-            
-            if len(intento) != 1:
-                st.warning("Por favor, ingresa una sola letra válida.")
-            elif intento in st.session_state.letras_adivinadas:
-                st.info("Ya adivinaste/probaste esa letra.")
-            else:
-                st.session_state.letras_adivinadas.append(intento)
-                
-                if intento in palabra_secreta:
-                    st.success("¡Bien hecho!")
-                else:
-                    st.session_state.intentos += 1
-                    st.error("Letra incorrecta.")
-                
-                st.rerun() # Actualiza la página para mostrar los cambios
+        # Controla que el jugador no repita letras que ya ha probado
+        if intento in letras_adivinadas:
+            print("Ya adivinaste esa letra.")
+            continue
     
-    # Botón para reiniciar
-    if st.button("Reiniciar Juego"):
-        st.session_state.palabra_secreta = random.choice(palabras_python)
-        st.session_state.letras_adivinadas = []
-        st.session_state.intentos = 0
-        st.rerun()
+        # Agrega la letra ingresada a la lista de letras ya jugadas
+        letras_adivinadas.append(intento)
+    
+        # Si la letra está en la palabra, se felicita al jugador
+        if intento in produccion_secreta:
+            print("¡Bien hecho!")
+        else: # Si no, se incrementa el contador de intentos fallidos, y se informa cuántos le quedan.
+            intentos += 1
+            print("Letra incorrecta. Te quedan", intentos_maximos - intentos, "intentos.")
+    
+        # Se asume inicialmente que el jugador sí ha adivinado toda la palabra.
+        produccion_completa = True
+        for letra in produccion_secreta: # Se recorre cada letra de la palabra secreta que el jugador debe adivinar.
+            if letra not in producciones_adivinadas: # Si alguna de las letras no ha sido adivinada aún, Se cambia el valor a False, porque la palabra aún no está completa
+                produccion_completa = False
+                break # Se usa break para salir del bucle inmediatamente, ya que con una sola letra faltante es suficiente para saber que no se ha ganado.
+    
+        if produccion_completa: # Si se logra adivinar la palabra, el juego se detendrá y se felicita al jugador
+            print("¡Felicidades! Adivinaste la palabra:", produccion_secreta)
+            break
+    else: # solo se ejecuta si el bucle termina de forma natural y no se logró adivinar la palabra y se agotó los intentos
+        print("¡Has perdido!")
+        print("La palabra era:", produccion_secreta)
+
+    
 
 
 
