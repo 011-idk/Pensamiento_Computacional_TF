@@ -306,8 +306,9 @@ elif opciones == 'Estadísticas':
     # Volvemos a poner 'Disquera' como índice y ordenamos de mayor a menor
     promedio_dos_disqueras = df_filtrado.set_index('Disquera')['vistas_yt'].sort_values(ascending=False)
         
-    # --- ESCALA A MILES ---
-    promedio_dos_disqueras = promedio_dos_disqueras / 1000
+    # --- CAMBIO A ESCALA DE MILLONES ---
+    # Se cambia la división de 1000 a 1000000
+    promedio_dos_disqueras = promedio_dos_disqueras / 1000000
     
     # Creamos la figura explícitamente para Streamlit (Tamaño 8, 5 para que no sea tan gigante al ser solo 2 barras)
     fig, ax = plt.subplots(figsize=(8, 5))
@@ -333,8 +334,9 @@ elif opciones == 'Estadísticas':
     plt.title('Comparativa: Hollywood Records vs Island Records', fontsize=13, fontweight='bold', color='#2D3436', pad=15)
     # Etiqueta del eje X
     plt.xlabel('Disquera', fontsize=10, color='#636E72', labelpad=10)
-    # Etiqueta del eje Y
-    plt.ylabel('Promedio de vistas obtenidas (en miles)', fontsize=10, color='#636E72', labelpad=10)
+    
+    # CAMBIO DE ETIQUETA EJE Y: Ahora indica "(en millones)"
+    plt.ylabel('Promedio de vistas obtenidas (en millones)', fontsize=10, color='#636E72', labelpad=10)
     
     # Estilizamos los nombres de los ejes (Al ser solo 2 nombres, rotación 0 es más estético)
     plt.xticks(rotation=0, fontsize=10, color='#2D3436')
@@ -351,6 +353,7 @@ elif opciones == 'Estadísticas':
     
     # 3. RENDERIZADO EN STREAMLIT:
     st.pyplot(fig)
+
 
 
 
