@@ -205,13 +205,13 @@ elif opciones == 'Games':
     while intentos < intentos_maximos:
         # Con el bucle for generamos una iteración de la letra adivinada según el contenido de la palabra secreta
         for letra in produccion_secreta:
-            if letra in producciones_adivinadas: # Evalúa si la letra actual ya ha sido adivinada
+            if letra in producciones_adivinadas or not letra.isalpha(): # Evalúa si la letra actual ya ha sido adivinada
                 print(letra, end=" ")
             else: # Si no se indica que esa letra aún está oculta
                 print("_", end=" ")
         print()  # salto de línea
     
-        intento = input("Adivina una letra: ")
+        intento = input("Adivina una letra: ").lower()
     
         # Verifica que el jugador solo haya ingresado una caracter
         if len(intento) != 1:
@@ -219,12 +219,12 @@ elif opciones == 'Games':
             continue
     
         # Controla que el jugador no repita letras que ya ha probado
-        if intento in letras_adivinadas:
+        if intento in producciones_adivinadas:
             print("Ya adivinaste esa letra.")
             continue
     
         # Agrega la letra ingresada a la lista de letras ya jugadas
-        letras_adivinadas.append(intento)
+        producciones_adivinadas.append(intento)
     
         # Si la letra está en la palabra, se felicita al jugador
         if intento in produccion_secreta:
