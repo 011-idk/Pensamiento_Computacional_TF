@@ -282,7 +282,7 @@ elif opciones == 'Estadísticas':
     # 1. Carga de datos
     df_comparativa = pd.read_excel("Musica_BD.xlsx")
     df_comparativa['vistas_yt'] = pd.to_numeric(df_comparativa['vistas_yt'], errors='coerce')
-    df_comparativa= df.dropna(subset=['vistas_yt', 'Disquera'])
+    df_comparativa= df_comparativa.dropna(subset=['vistas_yt', 'Disquera'])
     
     # 2. TU LÓGICA: Agrupar por Disquera y sacar el promedio de vistas_yt
     promedio_vistas_disquera = df.groupby('Disquera')['vistas_yt'].mean()
