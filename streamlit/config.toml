@@ -1,0 +1,7 @@
+[theme]
+primaryColor="#CCBDD9"
+backgroundColor="#DCD2E5"
+secondaryBackgroundColor="#987AB3"
+textColor="#0D0910"
+font = "Verdana"
+codeFont = "JetBrains Mono:https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap"
