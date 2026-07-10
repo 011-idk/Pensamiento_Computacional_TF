@@ -361,7 +361,7 @@ elif opciones == 'Estadísticas':
     Dato curioso: La mayoria de sus videos se grabaron en Los Ángeles, Californa. Al ser grabaciones cerradas, se desconocer el lugar específico en el cual se
     realizaron, mayoritariamente.
     """
-    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locación}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locacion}</div>", unsafe_allow_html=True)
     st.write("---") 
    
     # 1. Carga directa de los datos (sin st.cache_data)
