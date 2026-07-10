@@ -22,7 +22,7 @@ if opciones == 'Presentación':
     # El estilo CSS 'text-align: center' centra el texto -> style='text-align: center;'
     # unsafe_allow_html=True permite que Streamlit interprete y renderice el código HTML incluido en la cadena
 
-    st.image ("Sabrina Carpenter - One More Espresso.jpg", caption="Sabrina Carpenter - Grammys 2026", use_container_width=True)
+    st.image ("Sabrina_Carpenter_Grammys.webp", caption="Sabrina Carpenter - Grammys 2026", use_container_width=True)
     
    # Define una cadena de texto multilínea que contiene una guía para redactar una presentación personal.
     texto = """
