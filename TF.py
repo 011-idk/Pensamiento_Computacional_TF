@@ -268,7 +268,43 @@ elif opciones == 'Game':
 
 elif opciones == 'Estadísticas':
     st.markdown("<h2 style='text-align: center;'>Gráficos y demás</h2>", unsafe_allow_html=True)   
-
+   
+    # CONFIGURACIÓN DE LA PÁGINA
+    st.set_page_config(page_title="Análisis Comparativo - Disqueras", page_icon="bar-chart-line-fill", layout="wide")
+    
+    st.subtitle("📊 Análisis Comparativo: Impacto de Disqueras en YouTube")
+    st.markdown("Este módulo compara el rendimiento acumulado en `vistas_yt` entre las diferentes compañías discográficas registradas en `Musica_BD.xlsx`.")
+    
+    # Importamos el módulo pyplot de Matplotlib para crear gráficos.
+    import matplotlib.pyplot as plt
+    
+    # Calculamos el promedio de tarjetas rojas recibidas por cada equipo cuando juega como local.
+    # groupby() agrupa los datos por equipo y mean() calcula el promedio.
+    promedio_tarjeta_rojas = liga_depurada.groupby('HomeTeam')['HR'].mean()
+    
+    # Creamos un gráfico de barras verticales con los promedios de tarjetas rojas.
+    # kind='bar' indica que se usará un gráfico de barras.
+    # figsize define el tamaño de la figura.
+    promedio_tarjeta_rojas.plot(kind='bar', figsize=(10, 6), color='purple')
+    
+    # Agregamos título al gráfico.
+    plt.title('SP1: Promedio de tarjetas rojas como local', fontsize=12, fontweight='bold')
+    # Etiqueta del eje X: nombres de los equipos.
+    plt.xlabel('Equipo', fontsize=10)
+    # Etiqueta del eje Y: valores promedio de tarjetas rojas.
+    plt.ylabel('Promedio de goles anotados', fontsize=10)
+    
+    # Rotamos los nombres de los equipos para facilitar la lectura.
+    plt.xticks(rotation=75, ha='right')
+    # Agregamos una cuadrícula horizontal para comparar mejor los valores.
+    plt.grid(axis='y', linestyle='--', alpha=1)
+    
+    # Ajustamos automáticamente los espacios del gráfico para que los textos no se corten.
+    plt.tight_layout()
+    # Guardamos el gráfico como imagen PNG con una resolución de 300 dpi.
+    plt.savefig('barras_verticales_promedio_tarjeta_rojas.png', dpi=300)
+    # Mostramos el gráfico en pantalla.
+    plt.show()
 
 
     
