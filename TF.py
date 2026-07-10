@@ -375,17 +375,16 @@ elif opciones == 'Estadísticas':
     # Crear el mapa base de Folium
     mapa = folium.Map(location=[15.0, -30.0], zoom_start=2)
 
-    # Recorrer las filas únicas para colocar los marcadores
+     Recorrer las filas limpiando los paréntesis antes de separar
     for _, fila in df_mapa.iterrows():
-        lugar = fila['Grabación_lugar']
-        coordenadas_str = str(fila['Coordenadas'])
-        
-            # Separamos el texto "latitud, longitud" por la coma y lo convertimos a números float
-        lat, lon = map(float, coordenadas_str.split(','))
+        try:
+            # Convertimos a texto y eliminamos los paréntesis '(' y ')' si existen
+            coor_limpia = str(fila['Coordenas']).replace('(', '').replace(')', '')
             
-        if pd.notna(lat) and pd.notna(lon):
-            contenido = f"<b>Lugar:</b> {lugar}"
-                
+            # Ahora sí separamos por coma y convertimos a número
+            lat, lon = map(float, coor_limpia.split(','))
+            
+            contenido = f"<b>Lugar:</b> {fila['Grabación_lugar']}"
             folium.Marker(location=[lat, lon], popup=folium.Popup(contenido, max_width=300), icon=folium.Icon(color='cadetblue', icon='music')).add_to(mapa)
        
     # Mostrar el mapa interactivo en Streamlit
