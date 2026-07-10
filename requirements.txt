@@ -1,7 +1,6 @@
 streamlit
 pandas
 openpyxl
-matplotlib
 streamlit-option-menu
 folium
 streamlit-folium
