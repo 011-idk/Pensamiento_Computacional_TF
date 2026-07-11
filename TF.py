@@ -32,6 +32,20 @@ if opciones == 'Presentación': # Con bucle if creamos la primera seccione del m
     # Mostramos el texto de presentación debajo de la imagen utilizando HTML
     st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{texto}</div>", unsafe_allow_html=True)
 
+  st.write("---") # Genemos una linea divisoria
+ texto_bio = """
+    "Sabrina Carpenter (nacida el 11 de mayo de 1999 en Pensilvania) es una cantante, compositora y actriz estadounidense que se ha consolidado como 
+    una de las mayores estrellas del pop actual. Comenzó su carrera como actriz infantil, logrando su salto a la fama al interpretar a Maya Hart en la 
+    serie de Disney Channel Girl Meets World (2014-2017), para luego expandir su faceta actoral en películas. Aunque hacía música desde la adolescencia, 
+    su verdadera revolución musical llegó en 2022 con el álbum Emails I Can't Send, aclamado por su composición íntima y vulnerable. Ese mismo año, su 
+    popularidad se disparó a nivel mundial tras ser la telonera oficial de Taylor Swift en el fenómeno global The Eras Tour. Posteriormente, alcanzó el 
+    estatus de superestrella global con su álbum Short n' Sweet, un disco que rompió récords en las listas de éxitos gracias a sencillos virales y masivos 
+    como Espresso, Please Please Please y Taste, los cuales definen su estilo actual caracterizado por un pop pegadizo, letras atrevidas y una estética 
+    retro muy marcada.
+    """
+    # Mostramos el texto de presentación debajo de la imagen utilizando HTML
+    st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{texto_bio}</div>", unsafe_allow_html=True)
+
 
 elif opciones == 'Discografía': # Creamos la sección de Discografía 
     st.markdown("<h1 style='text-align: center;'>Álbums, Sensillos y más</h1>", unsafe_allow_html=True)
