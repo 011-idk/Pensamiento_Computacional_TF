@@ -32,7 +32,8 @@ if opciones == 'Presentación': # Con bucle if creamos la primera seccione del m
     # Mostramos el texto de presentación debajo de la imagen utilizando HTML
     st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{texto}</div>", unsafe_allow_html=True)
 
-  st.write("---") # Genemos una linea divisoria
+    st.write("---") 
+
  texto_bio = """
     "Sabrina Carpenter (nacida el 11 de mayo de 1999 en Pensilvania) es una cantante, compositora y actriz estadounidense que se ha consolidado como 
     una de las mayores estrellas del pop actual. Comenzó su carrera como actriz infantil, logrando su salto a la fama al interpretar a Maya Hart en la 
