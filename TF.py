@@ -56,7 +56,7 @@ elif opciones == 'Discografía': # Creamos la sección de Discografía
     # Variables de los lanzamientos
     nombre_disco = disco_seleccionado
     año_disco = Fecha.loc[nombre_disco]  # . loc nos permitira buscar información basándose en el nombre de la etiqueta o fila.
-    canciones_total = group_canciones.loc[nombre_disco]
+    canciones_total = grupo_canciones.loc[nombre_disco]
     portada_disco = portadas_lanzamientos.loc[nombre_disco]
     disquera_disco = disqueras_lanzamientos.loc[nombre_disco]
     
