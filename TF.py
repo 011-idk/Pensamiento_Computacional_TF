@@ -392,15 +392,14 @@ elif opciones == 'Espresso': #Creamos la última sección llamada Espresso
 
     st.markdown("---")
 
-    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locacion}</div>", unsafe_allow_html=True)
-    st.write("---") 
-
     #Creamos un texto introductorio a la parte del mapa interactivo
     texto_locacion = """
     Lugares en donde se grabaron los videos musicales de Sabrina Carpenter.
     Dato curioso: La mayoria de sus videos se grabaron en Los Ángeles, Californa. Al ser grabaciones cerradas, se desconocer el lugar específico en el cual se
     realizaron, mayoritariamente.
     """
+
+    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locacion}</div>", unsafe_allow_html=True)
    
     # Extraemos los datos de la base de datos Musica_BD.xlsx
     df_musica = pd.read_excel("Musica_BD.xlsx")
