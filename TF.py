@@ -33,11 +33,10 @@ if opciones == 'Presentación': # Con bucle if creamos la primera seccione del m
     st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{texto}</div>", unsafe_allow_html=True)
 
     st.write("---") 
-
-    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locacion}</div>", unsafe_allow_html=True)
     
     texto_bio = """
-    "Sabrina Carpenter (nacida el 11 de mayo de 1999 en Pensilvania) es una cantante, compositora y actriz estadounidense que se ha consolidado como 
+    "Biografía:
+    Sabrina Carpenter (nacida el 11 de mayo de 1999 en Pensilvania) es una cantante, compositora y actriz estadounidense que se ha consolidado como 
     una de las mayores estrellas del pop actual. Comenzó su carrera como actriz infantil, logrando su salto a la fama al interpretar a Maya Hart en la 
     serie de Disney Channel Girl Meets World (2014-2017), para luego expandir su faceta actoral en películas. Aunque hacía música desde la adolescencia, 
     su verdadera revolución musical llegó en 2022 con el álbum Emails I Can't Send, aclamado por su composición íntima y vulnerable. Ese mismo año, su 
