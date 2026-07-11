@@ -34,6 +34,8 @@ if opciones == 'Presentación': # Con bucle if creamos la primera seccione del m
 
     st.write("---") 
 
+    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locacion}</div>", unsafe_allow_html=True)
+    
     texto_bio = """
     "Sabrina Carpenter (nacida el 11 de mayo de 1999 en Pensilvania) es una cantante, compositora y actriz estadounidense que se ha consolidado como 
     una de las mayores estrellas del pop actual. Comenzó su carrera como actriz infantil, logrando su salto a la fama al interpretar a Maya Hart en la 
@@ -390,14 +392,16 @@ elif opciones == 'Espresso': #Creamos la última sección llamada Espresso
     st.pyplot(fig)
 
     st.markdown("---")
-#Creamos un texto introductorio a la parte del mapa interactivo
+
+    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locacion}</div>", unsafe_allow_html=True)
+    st.write("---") 
+
+    #Creamos un texto introductorio a la parte del mapa interactivo
     texto_locacion = """
     Lugares en donde se grabaron los videos musicales de Sabrina Carpenter.
     Dato curioso: La mayoria de sus videos se grabaron en Los Ángeles, Californa. Al ser grabaciones cerradas, se desconocer el lugar específico en el cual se
     realizaron, mayoritariamente.
     """
-    st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locacion}</div>", unsafe_allow_html=True)
-    st.write("---") 
    
     # Extraemos los datos de la base de datos Musica_BD.xlsx
     df_musica = pd.read_excel("Musica_BD.xlsx")
