@@ -1,30 +1,25 @@
-# Primer instalamos streamlit
+# Primer instalamos streamlit e importamos lo necesario para iniciar el programa
 import streamlit as st # Permite construir la página web
 import pandas as pd # Permitira leer las bases de datos
 import folium # Permite crear mapas
 from streamlit_option_menu import option_menu # Permite generar menus visuales
 from streamlit_folium import st_folium # Permite generarlos mapas dentro de la página web de Streamlit.
 
-# Menú vertical en una barra lateral
-# Crea una barra lateral (sidebar) en la aplicación.
+# Creamos el menú como barra lateral (sidebar) en la aplicación.
 with st.sidebar:
-    with st.expander("Selecciona una sección", expanded=True):
+    with st.expander("Selecciona una sección", expanded=True): #Utilizamos st.expander para que el menu pueda ocultarse o mostrarse
         opciones = option_menu (
-            menu_title=None, 
+            menu_title=None, # Utilizamos None para que no aparesca el titulo/encabezado del menú
             options=['Presentación', 'Discografía', 'Filmografía', 'Game', 'Espresso'], 
-            icons=['suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill'], 
+            icons=['suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill', 'suit-heart-fill'], #Repetimos los iconos
             default_index=0)
 
-if opciones == 'Presentación':
-    st.markdown("<h1 style='text-align: center;'>One More Espresso</h1>", unsafe_allow_html=True)
-    # Muestra un título principal utilizando HTML -> st.markdown("...", unsafe_allow_html=True)
-    # La etiqueta <h1> define un encabezado de nivel 1 -> "<h1 ...>...</h1>"
-    # El estilo CSS 'text-align: center' centra el texto -> style='text-align: center;'
-    # unsafe_allow_html=True permite que Streamlit interprete y renderice el código HTML incluido en la cadena
-
+if opciones == 'Presentación': # Con bucle if creamos la primera seccione del menú lateral
+    st.markdown("<h1 style='text-align: center;'>One More Espresso</h1>", unsafe_allow_html=True) # Muestra un título principal utilizando HTML 
     st.image ("Sabrina_Carpenter_Grammys.webp", caption="Sabrina Carpenter - Grammys 2026", use_container_width=True)
+    # Ponemos la imagen primero escribiendo el nombre del la misma ubicada en el repositorio, utilizando use_container_width=True para que abarque el ancho disponible.
     
-   # Define una cadena de texto multilínea que contiene una guía para redactar una presentación personal.
+   # Definimos una cadena de texto multilínea con guía para redactar una presentación sobre el la página
     texto = """
     ¡Bienvenidos! Este blog está dedicado a conocer y explorar la trayectoria de Sabrina Carpenter, tanto en su faceta como actriz como en su carrera musical. Aquí encontrarás información sobre
     su discografía desde sus inicos hasta los últimos lanzamientos, así como de sus películas y series más recordadas o que quiza no conocias.
@@ -38,34 +33,38 @@ if opciones == 'Presentación':
     st.markdown(f"<div style='text-align: justify; font-size: 18px;'>{texto}</div>", unsafe_allow_html=True)
 
 
-elif opciones == 'Discografía':
+elif opciones == 'Discografía': # Creamos la sección de Discografía 
     st.markdown("<h1 style='text-align: center;'>Álbums, Sensillos y más</h1>", unsafe_allow_html=True)
 
-    df_discografia = pd.read_excel("Musica_BD.xlsx")
-    lista_lanzamientos = list(df_discografia["Music_releases"].unique())[0:149]
+    df_discografia = pd.read_excel("Musica_BD.xlsx") # Importamos y leemos la primera base de datos de excel nombrada Musica_DB.xlsx
+    lista_lanzamientos = list(df_discografia["Music_releases"].unique())[0:149] #Creamos una lista unicamente con los datos de la columna seleccionada
     
-    # Agrupaciones generales del álbum
+    # Creamos una lista unicamente con los datos de la columna seleccionada
+    # Hacemos una agrupación general de los datos de la columna previamente seleccionada Music_releases
     Fecha = df_discografia.groupby("Music_releases")["Año"].first()
-    grupo_canciones = df_discografia.groupby('Music_releases')['canciones'].count()
-    portadas_lanzamientos = df_discografia.groupby('Music_releases')['portada_link'].first()
-    disqueras_lanzamientos = df_discografia.groupby('Music_releases')['Disquera'].first()
-
-    disco_seleccionado = st.selectbox("Selecciona un lanzamiento musical:", lista_lanzamientos)
-
-    st.write("---")
-    canciones_filtradas = df_discografia[df_discografia["Music_releases"] == disco_seleccionado]
+    # .first es utilizado para que de todas las filas que compartan el mismo nombre se tomen unicamente el primer valor que encuentre en la columna "Año"
+    grupo_canciones = df_discografia.groupby("Music_releases")["canciones"].count()
+    # count para determinar la cantidad de canciones pertenecientes a cada titulo de la columna Music_releases, los mismo en los demás casos
+    portadas_lanzamientos = df_discografia.groupby("Music_releases")["portada_link"].first()
+    disqueras_lanzamientos = df_discografia.groupby("Music_releases")["Disquera"].first()
     
-    # Variables de la cabecera superior del álbum
+    disco_seleccionado = st.selectbox("Selecciona un lanzamiento musical:", lista_lanzamientos)  # Creamos una especie de subsección
+    
+    st.write("---")  # Utilizada como linea divisora en pantalla
+    canciones_filtradas = df_discografia[df_discografia["Music_releases"] == disco_seleccionado]  # Filtramos las canciones de la columna conciones
+    
+    # Variables de los lanzamientos
     nombre_disco = disco_seleccionado
-    año_disco = Fecha.loc[nombre_disco]
-    canciones_total = grupo_canciones.loc[nombre_disco]
+    año_disco = Fecha.loc[nombre_disco]  # . loc nos permitira buscar información basándose en el nombre de la etiqueta o fila.
+    canciones_total = group_canciones.loc[nombre_disco]
     portada_disco = portadas_lanzamientos.loc[nombre_disco]
     disquera_disco = disqueras_lanzamientos.loc[nombre_disco]
-        
+    
     with st.container():
-        col1, col2 = st.columns(2) 
-        with col1:
-            st.markdown(f"""
+        col1, col2 = st.columns(2)  # Hacemos dos columnas
+        with col1:  # La primera columna contiene los datos generales antes extraidos
+            st.markdown(
+                f"""
             <h2 style='margin-top: 0;'>{nombre_disco}</h2>
             <p style='font-size: 18px;'>
                 <b>Lanzamiento:</b> {nombre_disco}<br>
@@ -73,72 +72,89 @@ elif opciones == 'Discografía':
                 <b>Disquera:</b> {disquera_disco}<br>
                 <b>Total de canciones:</b> {canciones_total}
             </p>
-            """, unsafe_allow_html=True)
-        with col2:
+            """,
+                unsafe_allow_html=True)
+            
+        with col2:  # La segunda columna contiene la imagen del lanzamiento
             st.image(portada_disco, use_container_width=True)
     
     st.write("---")
     st.markdown("Lista de Canciones")
     
-    # Ciclo para iterar y mostrar los datos de cada canción
+    # Ahora procedemos con la lista de canciones de cada lanzamiento
+    # Recorremos cada canción del disco seleccionado (usando .itertuples() de Pandas)
     for cancion in canciones_filtradas.itertuples():
-        nombre_cancion = cancion.canciones 
+        nombre_cancion = cancion.canciones
         genero_cancion = cancion.genero
         duracion_cancion = cancion.duracion
         enlace_spotify = cancion.Link_spotify
-
-# Convierte a texto y extrae solo los primeros 5 caracteres (los minutos y segundos)
+    
+        # NUEVO CAMBIO: Extraemos el enlace de la columna Link_letras
+        enlace_letras = cancion.Link_letras
+    
+        # Convertimos a texto los datos de la columa duracion y extraemos solo los primeros 5 caracteres (los minutos y segundos)
         duracion_cancion = str(cancion.duracion)[:5]
-        
-        with st.container():
-            st.markdown(f"""
+    
+        with st.container():  # Creamos un contenedor que agrupe los elementos
+            st.markdown(
+                f"""
             <h4><b>{nombre_cancion}</b></h4>
             <ul style='list-style-type: none; padding-left: 10px;'>
                 <li><b>Género:</b> {genero_cancion}</li>
                 <li><b>Duración:</b> {duracion_cancion}</li>
             </ul>
-            """, unsafe_allow_html=True)
-            
-            # Ajuste de columnas: Ahora solo reservamos un espacio pequeño para el botón de Spotify
-            # El segundo espacio vacío ([1, 4]) evita que el botón se estire feo por toda la pantalla
-            btn_col, _ = st.columns([1, 4]) 
-            with btn_col:
-                st.link_button("Spotify", url=enlace_spotify, use_container_width=True)
-            
-            st.write("") 
-            st.divider()
+            """,
+                unsafe_allow_html=True)
+    
+            # Creamos un diseño para dos botones alineados
+            # Creamos dos columnas iguales para botones y un espacio vacío grande a la derecha
+            btn_spotify, btn_letras, _ = st.columns([1, 1, 3])
+    
+            with btn_spotify:
+                st.link_button("Spotify 🎧", url=enlace_spotify, use_container_width=True)
+    
+            with btn_letras:
+                # Validamos que el enlace exista en Excel antes de mostrar el botón
+                if pd.notna(enlace_letras):
+                    st.link_button("Ver Letra 🎤", url=enlace_letras, use_container_width=True)
+                else:
+                    # Si la celda está vacía, muestra un botón deshabilitado o un mensaje sutil
+                    st.button("No disponible", disabled=True, use_container_width=True)
+    
+            st.write("")  # Generamos un salto de linea
+            st.divider()  # Generamos una línea horizontal que cruza la pantalla
 
 
 
-elif opciones == 'Filmografía':
+elif opciones == 'Filmografía': # Creamos la sección de Filmografía
     st.markdown("<h2 style='text-align: center;'>Carrea Actoral</h2>", unsafe_allow_html=True)
-
+#Creamos un texto introductorio a esta sección
     texto_actriz = """
     Sabrina Carpenter inicio en el mundo de la actuación a la edad de 11 años y desde entonces ha  participado en diversas producciones audiovisuales, 
     contruyendo un carrera actoral polifacética y en constante evolución. Sus primeras participaciones se dieron en series de televisión, más no fue hasta entrar a
     Disney que alcanzó gran popularidad internacional. Esto la a consolidado como una artista integral en la industria del entretenimiento.
     """
-
     st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_actriz}</div>", unsafe_allow_html=True)
 
     st.write("---")
 
-    # Carga de datos de películas
+    # Leemos y extraemos los datos de la segunda base de datos nombrada Filmografía_BD.xlsx
     df_filmografia = pd.read_excel("Filmografía_BD.xlsx")
-
+    #Creamos una especie de sub sección que se divida en tres tipos de productos
     seccion_seleccionada = st.selectbox("Selecciona una sección para ver sus producciones:", ["Películas", "Series", "Otros"])
 
-    st.write("---")
+    st.write("---") # Genemos una linea divisoria
 
-
+    #Utilizamos el bucle if para la sub sección
     if seccion_seleccionada == "Películas":  # Filtra filas que contengan 'peli' en Producciones_tipo
+        #Filtramos los datos de las columnas Producciones_tipo cuyos datos de sividen en la categoria de Peliculas, Series y Otros
         producciones_filtradas = df_filmografia[df_filmografia["Producciones_tipo"].str.lower().str.contains("peli", na=False)]
     elif seccion_seleccionada == "Series":  # Filtra filas exactas que digan 'serie'
         producciones_filtradas = df_filmografia[df_filmografia["Producciones_tipo"].str.lower() == "serie"]
     else:  # Sección 'Otros', Ahora busca la palabra exacta "otros", igual que con las Series
         producciones_filtradas = df_filmografia[df_filmografia["Producciones_tipo"].str.lower() == "otros"]
 
-
+    # Recorremos las filas de los datos filtrados de las producciones
     for proyecto in producciones_filtradas.itertuples():
         # Mapeo exacto de las columnas que solicitaste
         nombre_proyecto = proyecto.Producciones
@@ -150,7 +166,7 @@ elif opciones == 'Filmografía':
         portada_proyecto = proyecto.Link_portada
 
         with st.container():
-            col1, col2 = st.columns(2)  # Dos columnas por proyecto
+            col1, col2 = st.columns(2)  # Greamos dos columnas por proyecto
             with col1:
                 st.markdown(
                     f"""
@@ -165,26 +181,26 @@ elif opciones == 'Filmografía':
                 """,
                     unsafe_allow_html=True)
             with col2:
-                # La imagen se muestra al lado derecho, justo como en tu discografía
+                # Hacemos que la imagen se muestre del lado derecho, así como con la sección en discografía
                 st.image(portada_proyecto, use_container_width=True)
 
-            st.divider()  # Línea de separación sutil entre cada producción
+            st.divider()  # Creamos una línea de separación sutil entre cada producción
 
 
-elif opciones == 'Game':
+elif opciones == 'Game': # Creamos la sección Games
     st.markdown("<h2 style='text-align: center;'>¡Ahora de jugar!</h2>", unsafe_allow_html=True)   
-
+    # Creamos un texto introductorio a la sección
     texto_recomendacion = """
     Recomendación: Si es tu primer acercamiento a la carrera artistica de Sabrina Carpenter revisa la sección de filmografía
     antes de empezar a jugar. Ten en cuenta que los títulos estan en el idioma original, en este caso la mayoria estan en inglés. Mucha suerte!!!!
     """
     st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_recomendacion}</div>", unsafe_allow_html=True)
     st.write("---") 
-        
-    # Importamos la líbrería random
+    # Iniciamos la crreación del juego El Ahorcado con la Filmografía de Sabrina Carpenter
+    # Primero importamos la líbrería random
     import random
     
-    # Creamos una lista
+    # Creamos una lista con los nombres de las producciones
     lista_producciones = ["Law & Order: Special Victims Unit", "Just Dance Kids 2", "Phineas and Ferb", "The Unprofessional", "The Goodwin Games", 
                        "Orange Is the New Black", "Horns", "Austin & Ally", "Wander Over Yonder", "Walk the Prank", "Adventure in Babysitting", "Girls Meets World", 
                       "Soy Luna", "Mickey and the Roadster Racers", "Sofia the First", "The Short History of the Long Road", "Milo Murphy's Law", "Tall Girl", "Royalties", 
@@ -192,25 +208,25 @@ elif opciones == 'Game':
                       "Saturday Night Live", "Taylor Swift: The End of an Era", "The Muppet Show", "Confessions II - The Film"]
     
     
-    # 2. INICIALIZACIÓN SEGURA DEL ESTADO DE LA SESIÓN
+    # Utilizamos bucle if y st.session_state para comprovar si es la primera vez que se inicia una partida
     if "produccion_secreta" not in st.session_state:
-        st.session_state.produccion_secreta = random.choice(lista_producciones)
+        st.session_state.produccion_secreta = random.choice(lista_producciones) #Generamos algun dato al azar de lista_producciones
     if "producciones_adivinadas" not in st.session_state:
-        st.session_state.producciones_adivinadas = []
+        st.session_state.producciones_adivinadas = [] #Se guardan las veces que se a adivinado alguna letra
     if "intentos" not in st.session_state:
-        st.session_state.intentos = 0
+        st.session_state.intentos = 0 #Inicia con una cantidad de intentos de 0
     if "intentos_maximos" not in st.session_state:
-        st.session_state.intentos_maximos = 3
+        st.session_state.intentos_maximos = 3 # Marcamos un limite de intentos, en este caso 3
     
-    # Asignación a variables locales para facilitar la lectura
+    # Le asignamos variables para facilitar la lectura
     intentos_maximos = st.session_state.intentos_maximos
     produccion_secreta = st.session_state.produccion_secreta
     
-    # 3. INTERFAZ LATERAL (Muestra estadísticas de forma estática)
+    # Mostramos la cantidad de intentos fallidos y las letras que fueron utilizadad
     st.sidebar.markdown(f"**Intentos fallidos:** {st.session_state.intentos} / {intentos_maximos}")
     st.sidebar.markdown(f"**Letras probadas:** {', '.join(st.session_state.producciones_adivinadas)}")
     
-    # 4. CONSTRUCCIÓN DE LA PALABRA OCULTA
+    # Construcción de la palabra oculta
     palabra_mostrada = ""
     for letra in produccion_secreta:
         if not letra.isalpha(): 
@@ -220,17 +236,17 @@ elif opciones == 'Game':
         else:
             palabra_mostrada += "_ "
     
-    st.subheader("Adivina la producción cinematográfica o televisiva:")
+    st.subheader("Adivina la producción cinematográfica o televisiva:") # El emnsaje inicial que indica la dinamica del juego
     st.markdown(f"### {palabra_mostrada}")
     
-    # 5. CONTROL DE FIN DE JUEGO O ENTRADA DE DATOS
+    # Control del fin del juego o entrada de datos
     if st.session_state.intentos >= intentos_maximos:
-        st.error(f"💥 ¡Game Over! Agotaste tus {intentos_maximos} intentos. La producción era: **{produccion_secreta}**")
-
+        st.error(f"💥 ¡Game Over! Agotaste tus {intentos_maximos} intentos. La producción era: **{produccion_secreta}**") # Creamos aquello que aparecera en caso falle
+    #Creamos tres columnas para queel gif quede centrado
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.image("SC_gif_2.gif", caption="¡Inténtalo de nuevo!", width=400)
-    
+            st.image("SC_gif_2.gif", caption="¡Inténtalo de nuevo!", width=400) #Creamos un mensaje que aparece debajo del gif
+    # Lo mismo aplica en el caso que gane, con su respectivo mensaje y gif
     elif "_" not in palabra_mostrada:
         st.success("🎉 ¡Felicidades! ¡Has adivinado la producción con éxito!")
 
@@ -239,13 +255,13 @@ elif opciones == 'Game':
             st.image("SC_gif.gif", caption="¡Eres excelente!", width=400)
     
     else:
-        # INPUT TRADICIONAL SIN FORMULARIO (Elimina problemas de recarga en cascada)
+        # Utilizamos un input  para eliminar los problemas de sobrecarga
         intento = st.text_input("Adivina una letra (escribe y presiona Enter):", max_chars=1, key="input_letra")
     
         if intento:
-            letra_ingresada = intento.lower()
+            letra_ingresada = intento.lower() #Nos aseguramos que las letras ingresadas sena en minusculas
             
-            # Validación de caracteres válidos
+            # Validamos los caracteres válidos
             if not letra_ingresada.isalpha():
                 st.warning("Por favor, ingresa una sola letra válida.")
             elif letra_ingresada in st.session_state.producciones_adivinadas:
@@ -261,68 +277,68 @@ elif opciones == 'Game':
                     st.session_state.intentos += 1
                     st.toast("Letra incorrecta.", icon="❌")
                 
-                # Limpiamos el input forzando una recarga limpia para refrescar la interfaz
+                # Limpiamos el input
                 st.rerun()
     
-    # 6. BOTÓN DE REINICIO
+    # Creamos un boton de reinicio de la partida
     st.markdown("---")
-    if st.button("🔄 Reiniciar Juego / Siguiente Palabra"):
-        st.session_state.produccion_secreta = random.choice(lista_producciones)
+    if st.button("🔄 Reiniciar Juego / Siguiente Palabra"): #Estas son las palabras que apareceran en el boton
+        st.session_state.produccion_secreta = random.choice(lista_producciones # Se vuelve a eledir un dato al azar de la lista
         st.session_state.producciones_adivinadas = []
         st.session_state.intentos = 0
         st.rerun()
+        #En sintesis, se reinicia la partida
 
 
-elif opciones == 'Espresso':
+elif opciones == 'Espresso': #Creamos la última sección llamada Espresso
     st.markdown("<h2 style='text-align: center;'>Gráficos y demás</h2>", unsafe_allow_html=True)   
-   
+   # Creamos un mensaje introductorio a la sección
     texto_detalles = """
     Comparativa del éxito de las canciones de Sabrina Carpenter, tanto suyas como en las que participo, fromando parte de la disqueda Hollywood Records e 
     Islando Records segun las vistas de cada canción. 
     """
     st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_detalles}</div>", unsafe_allow_html=True)
     st.write("---") 
-    
+    # Importamos la libreria matplotlib para poder crear un grafico de barras
     import matplotlib.pyplot as plt
     # 1. Carga de datos
     df_comparativa = pd.read_excel("Musica_BD.xlsx")
     
-    # Convertimos a texto y eliminamos posibles comas de miles que confundan a Python
+    # Convertimos a texto y eliminamos posibles comas de miles
     df_comparativa['vistas_yt'] = df_comparativa['vistas_yt'].astype(str).str.replace(',', '', regex=False)
     
-    # Conversión numérica limpia
+    # REalizamos una conversión numerica
     df_comparativa['vistas_yt'] = pd.to_numeric(df_comparativa['vistas_yt'], errors='coerce')
     df_comparativa = df_comparativa.dropna(subset=['vistas_yt', 'Disquera'])
     
-    # --- CORRECCIÓN EXTRA DE SEGURIDAD ---
+    # Realizamos una correción extra de seguridad
     if df_comparativa['vistas_yt'].mean() < 100:
         df_comparativa['vistas_yt'] = df_comparativa['vistas_yt'] * 1000
     
-    # 2. LÓGICA: Agrupar por Disquera y sacar el promedio de vistas_yt
+    # Agrupamos la columna de Disquera y para sacar el promedio de la columna vistas_yt
     promedio_vistas_disquera = df_comparativa.groupby('Disquera')['vistas_yt'].mean()
     
-    # --- FILTRO EXCLUSIVO PARA DOS DISQUERAS ---
+    # Filtramos los datos exlusivamente de dos disqueras: Hollywood Records e Island Records
     # Convertimos el resultado a DataFrame para poder filtrar por el nombre de la disquera
     df_filtrado = promedio_vistas_disquera.reset_index()
     
-    # Filtramos para quedarnos UNICAMENTE con Hollywood Records e Island Records
+    # Filtramos para quedarnos unicamente con Hollywood Records e Island Records
     disqueras_a_comparar = ["Hollywood Records", "Island Records"]
     df_filtrado = df_filtrado[df_filtrado['Disquera'].isin(disqueras_a_comparar)]
     
     # Volvemos a poner 'Disquera' como índice y ordenamos de mayor a menor
     promedio_dos_disqueras = df_filtrado.set_index('Disquera')['vistas_yt'].sort_values(ascending=False)
     
-    
     # Lo ponemos en escala de miles
     promedio_dos_disqueras = promedio_dos_disqueras / 1000
     
-    # Creamos la figura explícitamente para Streamlit (Tamaño 8, 5 para que no sea tan gigante al ser solo 2 barras)
+    # Creamos la figura 
     fig, ax = plt.subplots(figsize=(8, 5))
     
-    # Dibujamos las barras verticales (puedes usar un color llamativo)
-    promedio_dos_disqueras.plot(kind='bar', ax=ax, color='#6C5CE7', width=0.4) # Reducimos width a 0.4 para que las 2 barras no se vean tan anchas
+    # Dibujamos las barras verticales
+    promedio_dos_disqueras.plot(kind='bar', ax=ax, color='#F5F5BC', width=0.4) # Reducimos width a 0.4 para que las 2 barras no se vean tan anchas
     
-    # [CORRECCIÓN 1] Eliminamos los bordes superior, derecho e izquierdo de la caja
+    # Eliminamos los bordes superior, derecho e izquierdo de las barras
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
@@ -330,10 +346,10 @@ elif opciones == 'Espresso':
     # Suavizamos el borde inferior (eje X) pasándolo a un gris muy sutil
     ax.spines['bottom'].set_color('#DCDDE1')
     
-    # [CORRECCIÓN 2] Suavizamos la cuadrícula horizontal reduciendo alpha a 0.2 y aclarando el color
+    # Suavizamos la cuadrícula horizontal 
     ax.grid(axis='y', linestyle='--', alpha=0.2, color='#636E72')
     
-    # [CORRECCIÓN 3] Enviamos la cuadrícula al fondo
+    # Enviamos la cuadrícula al fondo
     ax.set_axisbelow(True)
     
     # Agregamos título al gráfico
@@ -343,24 +359,23 @@ elif opciones == 'Espresso':
     # Etiqueta del eje Y
     plt.ylabel('Promedio de vistas obtenidas (en miles)', fontsize=10, color='#636E72', labelpad=10)
     
-    # Estilizamos los nombres de los ejes (Al ser solo 2 nombres, rotación 0 es más estético)
+    # Estilizamos los nombres de los ejes
     plt.xticks(rotation=0, fontsize=10, color='#2D3436')
     plt.yticks(fontsize=9, color='#636E72')
     ax.tick_params(axis='y', left=False) 
     ax.tick_params(axis='x', colors='#DCDDE1')
     
-    # Quitamos el fondo blanco rígido para acoplarse al tema de Streamlit
+    # Quitamos el fondo blanco para acoplarse al tema de Streamlit
     fig.patch.set_alpha(0.0)
     ax.patch.set_alpha(0.0)
     
     # Ajustamos automáticamente los espacios
     plt.tight_layout()
     
-    # 3. RENDERIZADO EN STREAMLIT:
     st.pyplot(fig)
 
     st.markdown("---")
-
+#Creamos un texto introductorio a la parte del mapa interactivo
     texto_locacion = """
     Lugares en donde se grabaron los videos musicales de Sabrina Carpenter.
     Dato curioso: La mayoria de sus videos se grabaron en Los Ángeles, Californa. Al ser grabaciones cerradas, se desconocer el lugar específico en el cual se
@@ -369,43 +384,42 @@ elif opciones == 'Espresso':
     st.markdown(f"<div style='text-align: justify; font-size: 18px; margin-bottom: 25px;'>{texto_locacion}</div>", unsafe_allow_html=True)
     st.write("---") 
    
-    # 1. Carga directa de los datos (sin st.cache_data)
+    # Extraemos los datos de la base de datos Musica_BD.xlsx
     df_musica = pd.read_excel("Musica_BD.xlsx")
 
     # 2. Extracción y limpieza para el mapa (coordenadas únicas)
-    # Quitamos filas vacías y eliminamos duplicados en las coordenadas
+    # Quitamos las filas vacías y eliminamos duplicados en las coordenadas
     df_mapa = df_musica[['Grabación_lugar', 'Coordenadas']].dropna().drop_duplicates(subset=['Coordenadas'])
 
-    st.subheader("Ubicaciones de Grabación")
+    st.subheader("Ubicaciones de Grabación") # Texto a modo de subtitulo
 
-    # Crear el mapa base de Folium
+    # Creamos el mapa base de Folium
     mapa = folium.Map(location=[15.0, -30.0], zoom_start=2)
 
-    #Recorrer las filas limpiando los paréntesis antes de separar
+    #Recorremos las filas limpiando los paréntesis antes de separar
     for _, fila in df_mapa.iterrows():
     
-        # Convertimos a texto y eliminamos los paréntesis '(' y ')' si existen
+        # Convertimos a texto y eliminamos los paréntesis '(' y ')
         coor_limpia = str(fila['Coordenadas']).replace('(', '').replace(')', '')
             
-        # Ahora sí separamos por coma y convertimos a número
+        # Separamos por coma y convertimos a número las coordenadas
         lat, lon = map(float, coor_limpia.split(','))
             
         contenido = f"<b>Lugar:</b> {fila['Grabación_lugar']}"
         folium.Marker(location=[lat, lon], popup=folium.Popup(contenido, max_width=300), icon=folium.Icon(color='cadetblue', icon='music')).add_to(mapa)
        
-    # Mostrar el mapa interactivo en Streamlit
+    # Mostramos el mapa interactivo en Streamlit
     st_folium(mapa, width=1000, height=500, returned_objects=[])
 
     st.markdown("---")
-
-    # 3. Sección de canciones con videoclip (MV) debajo del mapa
+#Finalmente creamos la sección de canciones con videoclip (MV) debajo del mapa
     st.subheader("Buscador de Videoclips")
 
     # Filtramos las canciones que tienen un link de video válido
     df_videos = df_musica[['canciones', 'mv', 'Link_mv']].dropna(subset=['Link_mv'])
 
     if not df_videos.empty:
-        # Menú desplegable con las canciones únicas que tienen video
+        # Creamos un menú desplegable con las canciones únicas que tienen video
         cancion_seleccionada = st.selectbox("Selecciona una canción para ver su videoclip:", options=df_videos['canciones'].unique())
 
         # Extraemos la información de la canción seleccionada
@@ -415,22 +429,5 @@ elif opciones == 'Espresso':
         st.write(f"**Canción:** {info_cancion['canciones']}")
         st.write(f"**Detalle del MV:** {info_cancion['mv']}")
         
-        # Enlace directo para abrir el video
+        # Permitimos un enlace directo para abrir el video
         st.markdown(f"[➡️ Ver Videoclip en este enlace]({info_cancion['Link_mv']})")
-    else:
-        st.warning("No se encontraron canciones con enlaces de videoclips en el archivo.")
-
-
-   
-
-
-
-
-    
-
-
-
-
-
-
-
