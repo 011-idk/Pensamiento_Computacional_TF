@@ -283,7 +283,7 @@ elif opciones == 'Game': # Creamos la sección Games
     # Creamos un boton de reinicio de la partida
     st.markdown("---")
     if st.button("🔄 Reiniciar Juego / Siguiente Palabra"): #Estas son las palabras que apareceran en el boton
-        st.session_state.produccion_secreta = random.choice(lista_producciones # Se vuelve a eledir un dato al azar de la lista
+        st.session_state.produccion_secreta = random.choice(lista_producciones) # Se vuelve a eledir un dato al azar de la lista
         st.session_state.producciones_adivinadas = []
         st.session_state.intentos = 0
         st.rerun()
