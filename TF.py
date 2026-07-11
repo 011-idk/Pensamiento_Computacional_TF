@@ -34,7 +34,7 @@ if opciones == 'Presentación': # Con bucle if creamos la primera seccione del m
 
     st.write("---") 
 
- texto_bio = """
+    texto_bio = """
     "Sabrina Carpenter (nacida el 11 de mayo de 1999 en Pensilvania) es una cantante, compositora y actriz estadounidense que se ha consolidado como 
     una de las mayores estrellas del pop actual. Comenzó su carrera como actriz infantil, logrando su salto a la fama al interpretar a Maya Hart en la 
     serie de Disney Channel Girl Meets World (2014-2017), para luego expandir su faceta actoral en películas. Aunque hacía música desde la adolescencia, 
